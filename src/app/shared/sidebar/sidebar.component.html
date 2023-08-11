@@ -1,0 +1,197 @@
+<header class="main-header">
+
+	<!--=====================================
+	LOGOTIPO
+	======================================-->
+	<a href="inicio" class="logo">
+
+		<!-- logo mini -->
+		<span class="logo-mini">
+
+			<img src="./../../../assets/img/plantilla/iconooficial.png" class="img-responsive" style="padding:10px">
+
+		</span>
+
+		<!-- logo normal -->
+
+		<span class="logo-lg"> Minioqueen
+
+			<!-- <img src="./../../../assets/img/plantilla/iconoblanco.png" class="img-responsive" style="padding:10px 0px"> -->
+
+		</span>
+
+	</a>
+
+	<!--=====================================
+	BARRA DE NAVEGACIÓN
+	======================================-->
+	<nav class="navbar navbar-static-top" role="navigation">
+
+		<!-- Botón de navegación -->
+
+		<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+
+			<span class="sr-only">Toggle navigation</span>
+
+		</a>
+
+		<!-- perfil de usuario -->
+
+		<div class="navbar-custom-menu">
+
+			<ul class="nav navbar-nav">
+
+				<li class="dropdown user user-menu">
+
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+						<img src="./../../../assets/img/usuarios/admin/924.jpg" class="user-image">
+						<span class="hidden-xs">Administrador</span>
+
+					</a>
+
+					<!-- Dropdown-toggle -->
+
+					<ul class="dropdown-menu">
+
+						<li class="user-body">
+
+							<div class="pull-right">
+
+								<a href="salir" class="btn btn-default btn-flat">Salir</a>
+
+							</div>
+
+						</li>
+
+					</ul>
+
+				</li>
+
+			</ul>
+
+		</div>
+
+	</nav>
+
+</header>
+<aside class="main-sidebar">
+
+	<section class="sidebar">
+
+		<ul class="sidebar-menu">
+
+			<li class="active">
+
+				<a  [routerLink]="['/dashboard/inicio' ]"> <i class="fa fa-home"></i> <span>Inicio</span> </a>
+
+			</li>
+
+			<li>
+
+				<a [routerLink]="['/dashboard/usuario' ]">
+
+					<i class="fa fa-user"></i>
+					<span>Usuarios</span>
+
+				</a>
+
+			</li>
+			<li>
+
+				<a [routerLink]="['/dashboard/categoria' ]">
+
+					<i class="fa fa-th"></i>
+					<span>Categorías</span>
+
+				</a>
+
+			</li>
+
+			<li>
+
+				<a [routerLink]="['/dashboard/productos' ]">
+
+					<i class="fa fa-product-hunt"></i>
+					<span>Productos</span>
+
+				</a>
+
+			</li>
+			<li>
+
+				<a [routerLink]="['/dashboard/clientes' ]">
+
+					<i class="fa fa-users"></i>
+					<span>Clientes</span>
+
+				</a>
+
+			</li>
+			<li>
+
+				<a [routerLink]="['/dashboard/pedidos' ]">
+
+					<i class="fa fa-product-hunt"></i>
+					<span>Pedidos</span>
+
+				</a>
+
+			</li>
+			<li class="treeview">
+
+				<a [routerLink]="['/dashboard/admin_ventas' ]" >
+
+					<i class="fa fa-list-ul"></i>
+
+					<span>Ventas</span>
+
+					<span class="pull-right-container">
+
+						<i class="fa fa-angle-left pull-right"></i>
+
+					</span>
+
+				</a>
+
+				<ul class="treeview-menu">
+
+					<li>
+
+						<a [routerLink]="['/dashboard/admin_ventas' ]">
+
+							<i class="fa fa-circle-o"></i>
+							<span>Administrar ventas</span>
+
+						</a>
+
+					</li>
+
+					<li>
+
+						<a [routerLink]="['/dashboard/crear_venta' ]">
+
+							<i class="fa fa-circle-o"></i>
+							<span>Crear venta</span>
+
+						</a>
+
+					</li>
+					<li>
+
+						<a [routerLink]="['/dashboard/reporte' ]">
+
+							<i class="fa fa-circle-o"></i>
+							<span>Reporte de ventas</span>
+
+						</a>
+
+					</li>
+				</ul>
+
+			</li>
+		</ul>
+
+	</section>
+
+</aside>
