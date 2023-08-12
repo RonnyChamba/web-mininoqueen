@@ -8,7 +8,7 @@
 
   <ol class="breadcrumb">
 
-    <li><a ><i class="fa fa-dashboard"></i> Inicio</a></li>
+    <li><a><i class="fa fa-dashboard"></i> Inicio</a></li>
 
     <li class="active">Administrar usuarios</li>
 
@@ -40,7 +40,7 @@
 
             <th style="width:10px">#</th>
             <th>Nombre</th>
-            <th>Usuario</th>
+            <th>Correo Electronico</th>
             <th>Foto</th>
             <th>Perfil</th>
             <th>Estado</th>
@@ -141,7 +141,7 @@
 
     <div class="modal-content">
 
-      <form role="form" method="post" enctype="multipart/form-data">
+      <form novalidate [formGroup]="validacionUsuario" #cuentaForm="ngForm">
 
         <!--=====================================
           CABEZA DEL MODAL
@@ -171,11 +171,22 @@
 
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
 
-                <input type="text" class="form-control input-lg" name="nuevoNombre" placeholder="Ingresar nombre"
-                  required>
-
+                <input type="text" class="form-control input-lg" placeholder="Ingresar nombre" formControlName="nombre">
+               
               </div>
-
+              <div
+              *ngIf="validacionUsuario.controls['nombre'].invalid && (validacionUsuario.controls['nombre'].dirty || validacionUsuario.controls['nombre'].touched)"
+              class="form-text text-danger">
+              <div *ngFor="let validation of user_validation_messages.nombre">
+                <div style="font-size: smaller !important;"
+                  *ngIf="validacionUsuario.get('nombre')?.hasError (validation.type) && (validacionUsuario.get('nombre')?.dirty || validacionUsuario.get('nombre')?.touched)">
+                  {{validation.message}}
+                </div>
+              </div>
+            </div>
+            <small *ngIf="nombreNoValido"
+              class="form-text text-danger animate__animated animate__heartBeat"></small>
+           
             </div>
 
             <!-- ENTRADA PARA EL USUARIO -->
@@ -186,11 +197,23 @@
 
                 <span class="input-group-addon"><i class="fa fa-key"></i></span>
 
-                <input type="text" class="form-control input-lg" name="nuevoUsuario" placeholder="Ingresar usuario"
-                  required>
-
+                <input type="email" class="form-control input-lg" placeholder="Ingresar correo electronico"
+                  formControlName="usuario">
+                 
               </div>
-
+              <div
+              *ngIf="validacionUsuario.controls['usuario'].invalid && (validacionUsuario.controls['usuario'].dirty || validacionUsuario.controls['usuario'].touched)"
+              class="form-text text-danger">
+              <div *ngFor="let validation of user_validation_messages.usuario">
+                <div style="font-size: smaller !important;"
+                  *ngIf="validacionUsuario.get('usuario')?.hasError (validation.type) && (validacionUsuario.get('usuario')?.dirty || validacionUsuario.get('usuario')?.touched)">
+                  {{validation.message}}
+                </div>
+              </div>
+            </div>
+            <small *ngIf="usuarioNoValido"
+              class="form-text text-danger animate__animated animate__heartBeat"></small>
+           
             </div>
 
             <!-- ENTRADA PARA LA CONTRASEÑA -->
@@ -201,11 +224,23 @@
 
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
 
-                <input type="password" class="form-control input-lg" name="nuevoPassword"
-                  placeholder="Ingresar contraseña" required>
+                <input type="password" class="form-control input-lg" placeholder="Ingresar contraseña"
+                  formControlName="Password">
 
               </div>
-
+              <div
+              *ngIf="validacionUsuario.controls['Password'].invalid && (validacionUsuario.controls['Password'].dirty || validacionUsuario.controls['Password'].touched)"
+              class="form-text text-danger">
+              <div *ngFor="let validation of user_validation_messages.Password">
+                <div style="font-size: smaller !important;"
+                  *ngIf="validacionUsuario.get('Password')?.hasError (validation.type) && (validacionUsuario.get('Password')?.dirty || validacionUsuario.get('Password')?.touched)">
+                  {{validation.message}}
+                </div>
+              </div>
+            </div>
+            <small *ngIf="PasswordNoValido"
+              class="form-text text-danger animate__animated animate__heartBeat"></small>
+           
             </div>
 
             <!-- ENTRADA PARA SELECCIONAR SU PERFIL -->
@@ -216,7 +251,7 @@
 
                 <span class="input-group-addon"><i class="fa fa-users"></i></span>
 
-                <select class="form-control input-lg" name="nuevoPerfil">
+                <select class="form-control input-lg" formControlName="perfil">
 
                   <option value="">Selecionar perfil</option>
 
@@ -229,7 +264,19 @@
                 </select>
 
               </div>
-
+              <div
+              *ngIf="validacionUsuario.controls['perfil'].invalid && (validacionUsuario.controls['perfil'].dirty || validacionUsuario.controls['perfil'].touched)"
+              class="form-text text-danger">
+              <div *ngFor="let validation of user_validation_messages.perfil">
+                <div style="font-size: smaller !important;"
+                  *ngIf="validacionUsuario.get('perfil')?.hasError (validation.type) && (validacionUsuario.get('perfil')?.dirty || validacionUsuario.get('perfil')?.touched)">
+                  {{validation.message}}
+                </div>
+              </div>
+            </div>
+            <small *ngIf="perfilNoValido"
+              class="form-text text-danger animate__animated animate__heartBeat"></small>
+           
             </div>
 
             <!-- ENTRADA PARA SUBIR FOTO -->
@@ -238,14 +285,14 @@
 
               <div class="panel">SUBIR FOTO</div>
 
-              <input type="file" id="nuevaFoto" name="nuevaFoto">
+              <input type="file" id="nuevaFoto" formControlName="foto">
 
               <p class="help-block">Peso máximo de la foto 200 MB</p>
 
-              <img src="./../../../assets/img/usuarios/default/anonymous.png" class="img-thumbnail" width="100px">
+             
 
             </div>
-
+            
           </div>
 
         </div>
@@ -258,7 +305,7 @@
 
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
 
-          <button type="submit" class="btn btn-primary">Guardar usuario</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!cuentaForm.form.valid">Guardar usuario</button>
 
         </div>
 

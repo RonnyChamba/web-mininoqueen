@@ -325,11 +325,11 @@
   
       <div class="modal-content">
   
-        <form role="form" method="post">
-  
+        <form [formGroup]="validacionClientes" #cuentaForm="ngForm">
+
           <!--=====================================
-          CABEZA DEL MODAL
-          ======================================-->
+            CABEZA DEL MODAL
+            ======================================-->
   
           <div class="modal-header" style="background:#3c8dbc; color:white">
   
@@ -340,110 +340,176 @@
           </div>
   
           <!--=====================================
-          CUERPO DEL MODAL
-          ======================================-->
+            CUERPO DEL MODAL
+            ======================================-->
   
           <div class="modal-body">
   
             <div class="box-body">
   
               <!-- ENTRADA PARA EL NOMBRE -->
-              
-              <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon"><i class="fa fa-user"></i></span> 
   
-                  <input type="text" class="form-control input-lg" name="nuevoCliente" placeholder="Ingresar nombre" required>
+              <div class="form-group">
+  
+                <div class="input-group">
+  
+                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
+  
+                  <input type="text" class="form-control input-lg" formControlName="nuevoCliente"
+                    placeholder="Ingresar nombre">
   
                 </div>
+                <div
+                  *ngIf="validacionClientes.controls['nuevoCliente'].invalid && (validacionClientes.controls['nuevoCliente'].dirty || validacionClientes.controls['nuevoCliente'].touched)"
+                  class="form-text text-danger">
+                  <div *ngFor="let validation of user_validation_messages.nuevoCliente">
+                    <div style="font-size: smaller !important;"
+                      *ngIf="validacionClientes.get('nuevoCliente')?.hasError (validation.type) && (validacionClientes.get('nuevoCliente')?.dirty || validacionClientes.get('nuevoCliente')?.touched)">
+                      {{validation.message}}
+                    </div>
+                  </div>
+                </div>
+                <small *ngIf="nuevoClienteNoValido"
+                  class="form-text text-danger animate__animated animate__heartBeat"></small>
   
               </div>
   
               <!-- ENTRADA PARA EL DOCUMENTO ID -->
-              
-              <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon"><i class="fa fa-key"></i></span> 
   
-                  <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" placeholder="Ingresar documento" required>
+              <div class="form-group">
+  
+                <div class="input-group">
+  
+                  <span class="input-group-addon"><i class="fa fa-key"></i></span>
+  
+                  <input type="text"  class="form-control input-lg" formControlName="nuevoDocumentoId"
+                    placeholder="Ingresar documento" maxlength="13" minlength="10" >
   
                 </div>
+                <div
+                *ngIf="validacionClientes.controls['nuevoDocumentoId'].invalid && (validacionClientes.controls['nuevoDocumentoId'].dirty || validacionClientes.controls['nuevoDocumentoId'].touched)"
+                class="form-text text-danger">
+                <div *ngFor="let validation of user_validation_messages.nuevoCliente">
+                  <div style="font-size: smaller !important;"
+                    *ngIf="validacionClientes.get('nuevoDocumentoId')?.hasError (validation.type) && (validacionClientes.get('nuevoDocumentoId')?.dirty || validacionClientes.get('nuevoDocumentoId')?.touched)">
+                    {{validation.message}}
+                  </div>
+                </div>
+              </div>
+              <small *ngIf="nuevoDocumentoIdNoValido"
+                class="form-text text-danger animate__animated animate__heartBeat"></small>
   
               </div>
   
               <!-- ENTRADA PARA EL EMAIL -->
-              
-              <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon"><i class="fa fa-envelope"></i></span> 
   
-                  <input type="email" class="form-control input-lg" name="nuevoEmail" placeholder="Ingresar email" required>
+              <div class="form-group">
+  
+                <div class="input-group">
+  
+                  <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+  
+                  <input type="email" class="form-control input-lg" formControlName="nuevoEmail"
+                    placeholder="Ingresar email">
   
                 </div>
+                <div
+                *ngIf="validacionClientes.controls['nuevoEmail'].invalid && (validacionClientes.controls['nuevoEmail'].dirty || validacionClientes.controls['nuevoEmail'].touched)"
+                class="form-text text-danger">
+                <div *ngFor="let validation of user_validation_messages.nuevoCliente">
+                  <div style="font-size: smaller !important;"
+                    *ngIf="validacionClientes.get('nuevoEmail')?.hasError (validation.type) && (validacionClientes.get('nuevoEmail')?.dirty || validacionClientes.get('nuevoEmail')?.touched)">
+                    {{validation.message}}
+                  </div>
+                </div>
+              </div>
+              <small *ngIf="nuevoEmailNoValido"
+                class="form-text text-danger animate__animated animate__heartBeat"></small>
   
               </div>
   
               <!-- ENTRADA PARA EL TELÉFONO -->
-              
-              <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon"><i class="fa fa-phone"></i></span> 
   
-                  <input type="text" class="form-control input-lg" name="nuevoTelefono" placeholder="Ingresar teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
+              <div class="form-group">
+  
+                <div class="input-group">
+  
+                  <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+  
+                  <input type="text" class="form-control input-lg" formControlName="nuevoTelefono"
+                    placeholder="Ingresar teléfono"  maxlength="10" minlength="10" >
   
                 </div>
+                <div
+                *ngIf="validacionClientes.controls['nuevoTelefono'].invalid && (validacionClientes.controls['nuevoTelefono'].dirty || validacionClientes.controls['nuevoTelefono'].touched)"
+                class="form-text text-danger">
+                <div *ngFor="let validation of user_validation_messages.nuevoTelefono">
+                  <div style="font-size: smaller !important;"
+                    *ngIf="validacionClientes.get('nuevoTelefono')?.hasError (validation.type) && (validacionClientes.get('nuevoTelefono')?.dirty || validacionClientes.get('nuevoTelefono')?.touched)">
+                    {{validation.message}}
+                  </div>
+                </div>
+              </div>
+              <small *ngIf="nuevoTelefonoNoValido"
+                class="form-text text-danger animate__animated animate__heartBeat"></small>
   
               </div>
   
               <!-- ENTRADA PARA LA DIRECCIÓN -->
-              
-              <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
   
-                  <input type="text" class="form-control input-lg" name="nuevaDireccion" placeholder="Ingresar dirección" required>
+              <div class="form-group">
+  
+                <div class="input-group">
+  
+                  <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+  
+                  <input type="text" class="form-control input-lg" formControlName="nuevaDireccion"
+                    placeholder="Ingresar dirección">
+  
+                </div>
+                <div
+                *ngIf="validacionClientes.controls['nuevaDireccion'].invalid && (validacionClientes.controls['nuevaDireccion'].dirty || validacionClientes.controls['nuevaDireccion'].touched)"
+                class="form-text text-danger">
+                <div *ngFor="let validation of user_validation_messages.nuevaDireccion">
+                  <div style="font-size: smaller !important;"
+                    *ngIf="validacionClientes.get('nuevaDireccion')?.hasError (validation.type) && (validacionClientes.get('nuevaDireccion')?.dirty || validacionClientes.get('nuevaDireccion')?.touched)">
+                    {{validation.message}}
+                  </div>
+                </div>
+              </div>
+              <small *ngIf="nuevaDireccionNoValido"
+                class="form-text text-danger animate__animated animate__heartBeat"></small>
+  
+              </div>
+  
+              <!-- ENTRADA PARA LA FECHA DE NACIMIENTO -->
+  
+              <div class="form-group">
+  
+                <div class="input-group">
+  
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+  
+                  <input type="text" class="form-control input-lg" name="nuevaFechaNacimiento"
+                    placeholder="Ingresar fecha nacimiento" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask>
   
                 </div>
   
               </div>
   
-               <!-- ENTRADA PARA LA FECHA DE NACIMIENTO -->
-              
-              <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-  
-                  <input type="text" class="form-control input-lg" name="nuevaFechaNacimiento" placeholder="Ingresar fecha nacimiento" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask required>
-  
-                </div>
-  
-              </div>
-    
             </div>
   
           </div>
   
           <!--=====================================
-          PIE DEL MODAL
-          ======================================-->
+            PIE DEL MODAL
+            ======================================-->
   
           <div class="modal-footer">
   
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
   
-            <button type="submit" class="btn btn-primary">Guardar cliente</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!cuentaForm.form.valid">Guardar cliente</button>
   
           </div>
   

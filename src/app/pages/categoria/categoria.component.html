@@ -131,7 +131,7 @@
   
       <div class="modal-content">
   
-        <form role="form" method="post">
+        <form   [formGroup]="validacionCategoria" #cuentaForm="ngForm">
   
           <!--=====================================
           CABEZA DEL MODAL
@@ -161,11 +161,23 @@
                 
                   <span class="input-group-addon"><i class="fa fa-th"></i></span> 
   
-                  <input type="text" class="form-control input-lg" name="nuevaCategoria" placeholder="Ingresar categoría" required>
+                  <input type="text" class="form-control input-lg"  placeholder="Ingresar categoría" formControlName="categoria">
   
                 </div>
   
               </div>
+              <div
+              *ngIf="validacionCategoria.controls['categoria'].invalid && (validacionCategoria.controls['categoria'].dirty || validacionCategoria.controls['categoria'].touched)"
+              class="form-text text-danger">
+              <div *ngFor="let validation of user_validation_messages.categoria">
+                <div style="font-size: smaller !important;"
+                  *ngIf="validacionCategoria.get('categoria')?.hasError (validation.type) && (validacionCategoria.get('categoria')?.dirty || validacionCategoria.get('categoria')?.touched)">
+                  {{validation.message}}
+                </div>
+              </div>
+            </div>
+            <small *ngIf="categoriaNoValido"
+              class="form-text text-danger animate__animated animate__heartBeat"></small>
     
             </div>
   
@@ -179,7 +191,7 @@
   
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
   
-            <button type="submit" class="btn btn-primary">Guardar categoría</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!cuentaForm.form.valid">Guardar categoría</button>
   
           </div>
   
