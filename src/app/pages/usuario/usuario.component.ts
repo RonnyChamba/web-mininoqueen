@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
 
@@ -9,32 +9,41 @@ import { LoginService } from 'src/app/services/login.service';
   styleUrls: ['./usuario.component.scss'],
 })
 export class UsuarioComponent {
-  constructor(private fb: FormBuilder ,private loginService: LoginService,
-    private router: Router) {}
-
-  public validacionUsuario = this.fb.group({
+  validacionUsuario:FormGroup;
+  usuarios:any[]=[];
+  constructor(
+    private fb: FormBuilder,
+    private loginService: LoginService,
+    private router: Router
+  ) {
+    
+  this.validacionUsuario = this.fb.group({
     nombre: ['', Validators.required],
-    usuario: ['',[
-      Validators.required,
-      Validators.pattern(
-        '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$'
-      ),
-    ],],
+    usuario: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(
+          '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$'
+        ),
+      ],
+    ],
     Password: ['', Validators.required],
     perfil: ['', Validators.required],
-     
   });
+  }
 
-  
+
   user_validation_messages = {
     nombre: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
-      }
+      },
     ],
 
-    usuario:[{
+    usuario: [
+      {
         type: 'required',
         message: 'Campo obligatorio.',
       },
@@ -44,17 +53,14 @@ export class UsuarioComponent {
       {
         type: 'required',
         message: 'Campo obligatorio.',
-      }
+      },
     ],
     perfil: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
-      }
+      },
     ],
-    
-
-
   };
   get nombreValido() {
     return (
@@ -108,17 +114,17 @@ export class UsuarioComponent {
       this.validacionUsuario.get('usuario')?.touched
     );
   }
-  
-  
 
-
-  register(){
-    this.loginService.register(this.validacionUsuario.value)
-    .then(response=>{
-      console.log(response)
+  addUser(){
+    const validacionUsuario:any ={
+      nombre: this.validacionUsuario.value.nombre,
+      usuario: this.validacionUsuario.value.nuevoCodigo,
+      Password: this.validacionUsuario.value.Password,
+      nuevoCodigo: this.validacionUsuario.value.nuevoCodigo,
+      perfil: this.validacionUsuario.value. perfil,
+     
     }
-      )
-    .catch(error => console.log(error));
   }
-}
 
+
+}
