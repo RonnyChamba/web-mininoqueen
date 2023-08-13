@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +10,11 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private loginService: LoginService,
+    private router: Router
+  ) {}
 
   public validacion = this.fb.group({
     ingUsuario: [
@@ -36,8 +42,7 @@ export class LoginComponent {
       {
         type: 'required',
         message: 'Campo obligatorio.',
-      }
-     
+      },
     ],
   };
   get ingUsuarioValido() {
@@ -65,5 +70,14 @@ export class LoginComponent {
       this.validacion.get('ingPassword')?.invalid &&
       this.validacion.get('ingPassword')?.touched
     );
+  }
+
+  onSubmit() {
+    this.loginService
+      .login(this.validacion.value)
+      .then(() => {
+        this.router.navigate(['/dashboard/inicio']);
+      })
+      .catch((error) => alert("incorrecto"));
   }
 }

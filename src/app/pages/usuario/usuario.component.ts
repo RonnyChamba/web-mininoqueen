@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-usuario',
@@ -7,7 +9,8 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./usuario.component.scss'],
 })
 export class UsuarioComponent {
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder ,private loginService: LoginService,
+    private router: Router) {}
 
   public validacionUsuario = this.fb.group({
     nombre: ['', Validators.required],
@@ -107,5 +110,15 @@ export class UsuarioComponent {
   }
   
   
+
+
+  register(){
+    this.loginService.register(this.validacionUsuario.value)
+    .then(response=>{
+      console.log(response)
+    }
+      )
+    .catch(error => console.log(error));
+  }
 }
 
