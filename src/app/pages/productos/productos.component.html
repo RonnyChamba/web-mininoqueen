@@ -60,13 +60,13 @@
             <td>1</td>
             <td><img src="./../../../assets/img/productos/default/anonymous.png" class="img-thumbnail" width="40px">
             </td>
-            <td>{{productos.nuevoCodigo}}</td>
-            <td>{{productos.nuevaDescripcion}}</td>
-            <td>{{productos.nuevaCategoria}}</td>
-            <td>{{productos.nuevoStock}}</td>
-            <td>{{productos.nuevoPrecioCompra | currency}}</td>
-            <td>{{productos.nuevoPrecioVenta | currency}}</td>
-            <td>{{productos.nuevasubCategoria}}</td>
+            <td>{{productos.codigo}}</td>
+            <td>{{productos.descripcion}}</td>
+            <td>{{productos.categoria}}</td>
+            <td>{{productos.stock}}</td>
+            <td>{{productos.precioCompra | currency}}</td>
+            <td>{{productos.precioVenta | currency}}</td>
+            <td>{{productos.subCategoria}}</td>
             <td>{{productos.productoAnterior}}</td>
             <td>
 
@@ -140,21 +140,21 @@ MODAL AGREGAR PRODUCTO
 
                 <span class="input-group-addon"><i class="fa fa-code"></i></span>
 
-                <input type="text" class="form-control input-lg" formControlName="nuevoCodigo"
+                <input type="text" class="form-control input-lg" formControlName="codigo"
                   placeholder="Ingresar código">
 
               </div>
               <div
-                *ngIf="validacionProductos.controls['nuevoCodigo'].invalid && (validacionProductos.controls['nuevoCodigo'].dirty || validacionProductos.controls['nuevoCodigo'].touched)"
+                *ngIf="validacionProductos.controls['codigo'].invalid && (validacionProductos.controls['codigo'].dirty || validacionProductos.controls['codigo'].touched)"
                 class="form-text text-danger">
-                <div *ngFor="let validation of user_validation_messages.nuevoCodigo">
+                <div *ngFor="let validation of user_validation_messages.codigo">
                   <div style="font-size: smaller !important;"
-                    *ngIf="validacionProductos.get('nuevoCodigo')?.hasError (validation.type) && (validacionProductos.get('nuevoCodigo')?.dirty || validacionProductos.get('nuevoCodigo')?.touched)">
+                    *ngIf="validacionProductos.get('codigo')?.hasError (validation.type) && (validacionProductos.get('codigo')?.dirty || validacionProductos.get('codigo')?.touched)">
                     {{validation.message}}
                   </div>
                 </div>
               </div>
-              <small *ngIf="nuevoCodigoNoValido"
+              <small *ngIf="codigoNoValido"
                 class="form-text text-danger animate__animated animate__heartBeat"></small>
 
             </div>
@@ -167,21 +167,21 @@ MODAL AGREGAR PRODUCTO
 
                 <span class="input-group-addon"><i class="fa fa-product-hunt"></i></span>
 
-                <input type="text" class="form-control input-lg" formControlName="nuevaDescripcion"
+                <input type="text" class="form-control input-lg" formControlName="descripcion"
                   placeholder="Ingresar descripción">
 
               </div>
               <div
-                *ngIf="validacionProductos.controls['nuevaDescripcion'].invalid && (validacionProductos.controls['nuevaDescripcion'].dirty || validacionProductos.controls['nuevaDescripcion'].touched)"
+                *ngIf="validacionProductos.controls['descripcion'].invalid && (validacionProductos.controls['descripcion'].dirty || validacionProductos.controls['descripcion'].touched)"
                 class="form-text text-danger">
-                <div *ngFor="let validation of user_validation_messages.nuevaDescripcion">
+                <div *ngFor="let validation of user_validation_messages.descripcion">
                   <div style="font-size: smaller !important;"
-                    *ngIf="validacionProductos.get('nuevaDescripcion')?.hasError (validation.type) && (validacionProductos.get('nuevaDescripcion')?.dirty || validacionProductos.get('nuevaDescripcion')?.touched)">
+                    *ngIf="validacionProductos.get('descripcion')?.hasError (validation.type) && (validacionProductos.get('descripcion')?.dirty || validacionProductos.get('descripcion')?.touched)">
                     {{validation.message}}
                   </div>
                 </div>
               </div>
-              <small *ngIf="nuevaDescripcionNoValido"
+              <small *ngIf="descripcionNoValido"
                 class="form-text text-danger animate__animated animate__heartBeat"></small>
 
             </div>
@@ -194,7 +194,7 @@ MODAL AGREGAR PRODUCTO
 
                 <span class="input-group-addon"><i class="fa fa-th"></i></span>
 
-                <select class="form-control input-lg" formControlName="nuevaCategoria">
+                <select class="form-control input-lg" formControlName="categoria">
 
                   <option value="">Selecionar categoría</option>
 
@@ -208,16 +208,16 @@ MODAL AGREGAR PRODUCTO
 
               </div>
               <div
-                *ngIf="validacionProductos.controls['nuevaCategoria'].invalid && (validacionProductos.controls['nuevaCategoria'].dirty || validacionProductos.controls['nuevaCategoria'].touched)"
+                *ngIf="validacionProductos.controls['categoria'].invalid && (validacionProductos.controls['categoria'].dirty || validacionProductos.controls['categoria'].touched)"
                 class="form-text text-danger">
-                <div *ngFor="let validation of user_validation_messages.nuevaCategoria">
+                <div *ngFor="let validation of user_validation_messages.categoria">
                   <div style="font-size: smaller !important;"
-                    *ngIf="validacionProductos.get('nuevaCategoria')?.hasError (validation.type) && (validacionProductos.get('nuevaCategoria')?.dirty || validacionProductos.get('nuevaCategoria')?.touched)">
+                    *ngIf="validacionProductos.get('categoria')?.hasError (validation.type) && (validacionProductos.get('categoria')?.dirty || validacionProductos.get('categoria')?.touched)">
                     {{validation.message}}
                   </div>
                 </div>
               </div>
-              <small *ngIf="nuevaCategoriaNoValido"
+              <small *ngIf="categoriaNoValido"
                 class="form-text text-danger animate__animated animate__heartBeat"></small>
 
             </div>
@@ -232,21 +232,21 @@ MODAL AGREGAR PRODUCTO
 
                 <span class="input-group-addon"><i class="fa fa-check"></i></span>
 
-                <input type="number" class="form-control input-lg" formControlName="nuevoStock" min="0"
+                <input type="number" class="form-control input-lg" formControlName="stock" min="0"
                   placeholder="Stock">
 
               </div>
               <div
-                *ngIf="validacionProductos.controls['nuevoStock'].invalid && (validacionProductos.controls['nuevoStock'].dirty || validacionProductos.controls['nuevoStock'].touched)"
+                *ngIf="validacionProductos.controls['stock'].invalid && (validacionProductos.controls['stock'].dirty || validacionProductos.controls['stock'].touched)"
                 class="form-text text-danger">
-                <div *ngFor="let validation of user_validation_messages.nuevoStock">
+                <div *ngFor="let validation of user_validation_messages.stock">
                   <div style="font-size: smaller !important;"
-                    *ngIf="validacionProductos.get('nuevoStock')?.hasError (validation.type) && (validacionProductos.get('nuevoStock')?.dirty || validacionProductos.get('nuevoStock')?.touched)">
+                    *ngIf="validacionProductos.get('stock')?.hasError (validation.type) && (validacionProductos.get('stock')?.dirty || validacionProductos.get('stock')?.touched)">
                     {{validation.message}}
                   </div>
                 </div>
               </div>
-              <small *ngIf="nuevoStockNoValido"
+              <small *ngIf="stockNoValido"
                 class="form-text text-danger animate__animated animate__heartBeat"></small>
 
             </div>
@@ -261,21 +261,21 @@ MODAL AGREGAR PRODUCTO
 
                   <span class="input-group-addon"><i class="fa fa-arrow-up"></i></span>
 
-                  <input type="number" class="form-control input-lg" formControlName="nuevoPrecioCompra" min="0"
+                  <input type="number" class="form-control input-lg" formControlName="precioCompra" min="0"
                     placeholder="Precio de compra">
 
                 </div>
                 <div
-                  *ngIf="validacionProductos.controls['nuevoPrecioCompra'].invalid && (validacionProductos.controls['nuevoPrecioCompra'].dirty || validacionProductos.controls['nuevoPrecioCompra'].touched)"
+                  *ngIf="validacionProductos.controls['precioCompra'].invalid && (validacionProductos.controls['precioCompra'].dirty || validacionProductos.controls['precioCompra'].touched)"
                   class="form-text text-danger">
-                  <div *ngFor="let validation of user_validation_messages.nuevoPrecioCompra">
+                  <div *ngFor="let validation of user_validation_messages.precioCompra">
                     <div style="font-size: smaller !important;"
-                      *ngIf="validacionProductos.get('nuevoPrecioCompra')?.hasError (validation.type) && (validacionProductos.get('nuevoPrecioCompra')?.dirty || validacionProductos.get('nuevoPrecioCompra')?.touched)">
+                      *ngIf="validacionProductos.get('precioCompra')?.hasError (validation.type) && (validacionProductos.get('precioCompra')?.dirty || validacionProductos.get('precioCompra')?.touched)">
                       {{validation.message}}
                     </div>
                   </div>
                 </div>
-                <small *ngIf="nuevoPrecioCompraNoValido"
+                <small *ngIf="precioCompraNoValido"
                   class="form-text text-danger animate__animated animate__heartBeat"></small>
 
               </div>
@@ -288,21 +288,21 @@ MODAL AGREGAR PRODUCTO
 
                   <span class="input-group-addon"><i class="fa fa-arrow-down"></i></span>
 
-                  <input type="number" class="form-control input-lg" formControlName="nuevoPrecioVenta" min="0"
+                  <input type="number" class="form-control input-lg" formControlName="precioVenta" min="0"
                     placeholder="Precio de venta">
 
                 </div>
                 <div
-                  *ngIf="validacionProductos.controls['nuevoPrecioVenta'].invalid && (validacionProductos.controls['nuevoPrecioVenta'].dirty || validacionProductos.controls['nuevoPrecioVenta'].touched)"
+                  *ngIf="validacionProductos.controls['precioVenta'].invalid && (validacionProductos.controls['precioVenta'].dirty || validacionProductos.controls['precioVenta'].touched)"
                   class="form-text text-danger">
-                  <div *ngFor="let validation of user_validation_messages.nuevoPrecioVenta">
+                  <div *ngFor="let validation of user_validation_messages.precioVenta">
                     <div style="font-size: smaller !important;"
-                      *ngIf="validacionProductos.get('nuevoPrecioVenta')?.hasError (validation.type) && (validacionProductos.get('nuevoPrecioVenta')?.dirty || validacionProductos.get('nuevoPrecioVenta')?.touched)">
+                      *ngIf="validacionProductos.get('precioVenta')?.hasError (validation.type) && (validacionProductos.get('precioVenta')?.dirty || validacionProductos.get('precioVenta')?.touched)">
                       {{validation.message}}
                     </div>
                   </div>
                 </div>
-                <small *ngIf="nuevoPrecioVentaNoValido"
+                <small *ngIf="precioVentaNoValido"
                   class="form-text text-danger animate__animated animate__heartBeat"></small>
 
                 <br>
@@ -318,7 +318,7 @@ MODAL AGREGAR PRODUCTO
 
                   <span class="input-group-addon"><i class="fa fa-th"></i></span>
 
-                  <select class="form-control input-lg" formControlName="nuevasubCategoria">
+                  <select class="form-control input-lg" formControlName="subCategoria">
 
                     <option value="">sub-categoría</option>
 
@@ -396,7 +396,7 @@ MODAL AGREGAR PRODUCTO
 
               <div class="panel">SUBIR IMAGEN</div>
 
-              <input type="file" id="nuevaImagen" formControlName="nuevaImagen">
+              <input type="file" id="nuevaImagen" formControlName="imagen">
 
               <p class="help-block">Peso máximo de la imagen 2MB</p>
 
@@ -416,7 +416,7 @@ MODAL AGREGAR PRODUCTO
 
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
 
-          <button type="submit" class="btn btn-primary" [disabled]="!cuentaForm.form.valid" (click)=" addProductos()">Guardar producto</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!cuentaForm.form.valid" (click)=" addProductos()"  data-dismiss="modal">Guardar producto</button>
 
         </div>
 

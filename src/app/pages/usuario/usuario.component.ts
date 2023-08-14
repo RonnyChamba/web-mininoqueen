@@ -1,19 +1,21 @@
-import { Component } from '@angular/core';
+import { UsuarioService } from './../../services/usuario.service';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuario',
   templateUrl: './usuario.component.html',
   styleUrls: ['./usuario.component.scss'],
 })
-export class UsuarioComponent {
+export class UsuarioComponent implements OnInit {
   validacionUsuario:FormGroup;
   usuarios:any[]=[];
   constructor(
     private fb: FormBuilder,
-    private loginService: LoginService,
+    private usuarioService: UsuarioService,
     private router: Router
   ) {
     
@@ -31,6 +33,9 @@ export class UsuarioComponent {
     Password: ['', Validators.required],
     perfil: ['', Validators.required],
   });
+  }
+  ngOnInit(): void {
+    this.getUser();
   }
 
 
@@ -115,16 +120,52 @@ export class UsuarioComponent {
     );
   }
 
-  addUser(){
-    const validacionUsuario:any ={
-      nombre: this.validacionUsuario.value.nombre,
-      usuario: this.validacionUsuario.value.nuevoCodigo,
-      Password: this.validacionUsuario.value.Password,
-      nuevoCodigo: this.validacionUsuario.value.nuevoCodigo,
-      perfil: this.validacionUsuario.value. perfil,
+  // addUser(){
+  //   const validacionUsuario:any ={
+  //     nombre: this.validacionUsuario.value.nombre,
+  //     usuario: this.validacionUsuario.value.nuevoCodigo,
+  //     Password: this.validacionUsuario.value.Password,
+  //     nuevoCodigo: this.validacionUsuario.value.nuevoCodigo,
+  //     perfil: this.validacionUsuario.value. perfil,
      
-    }
+  //   }
+  // }
+
+  getUser() {
+    this.usuarioService.getUser().subscribe((data) => {
+      this.usuarios = [];
+      data.forEach((element: any) => {
+        // console.log(element.payload.doc.id)
+        this.usuarios.push({
+          id: element.payload.doc.id,
+          ...element.payload.doc.data(),
+        });
+      });
+      // console.log(this.productos)
+    });
   }
 
 
+  deleteUser(id: string) {
+
+    let  usuario = this.usuarios.find(item => item.id == id);
+    Swal.fire({
+      title: 'Esta seguro?',
+      text:  `¿Esta seguro de eliminar el usuario ${usuario? usuario.nombre: ''}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si,Eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+    if (result.isConfirmed) {
+    this.usuarioService.deleteUser(id)
+      
+        Swal.fire( 'Usuario eliminada',
+        'El usuario ha sido eliminado con exito',
+        'success');
+      }
+    });
+  }
 }

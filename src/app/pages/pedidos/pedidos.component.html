@@ -50,12 +50,12 @@
         <tbody>
           
           <tr  *ngFor="let pedi of pedidos">
-            <td></td>
-            <td><img src="./../../../assets/img/productos/default/anonymous.png" class="img-thumbnail" width="40px"></td>
-            <td>0001</td>
-            <td>Lorem ipsum dolor sit amet</td>
-            <td>Lorem Ipsum</td>
-            <td>20</td>
+            <td>{{pedi.codigo}}</td>
+            <td>{{pedi.estado}}</td>
+            <td>{{pedi.fecha}}</td>
+            <td>{{pedi.idCliente}}</td>
+            <td>{{pedi.idVendedor}}</td>
+            <td>{{pedi.impuesto}}</td>
             <td>$ 5.00</td>
             <td>$ 10.00</td>
             <td>2017-12-11 12:05:32</td>
@@ -65,7 +65,7 @@
                   
                 <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
 
-                <button class="btn btn-danger"><i class="fa fa-times"></i></button>
+                <button class="btn btn-danger" (click)="deletePedidos(pedi.id)"><i class="fa fa-times"></i></button>
 
               </div>  
 
@@ -73,54 +73,7 @@
 
           </tr>
 
-           <tr>
-
-            <td>1</td>
-            <td><img src="./../../../assets/img/productos/default/anonymous.png" class="img-thumbnail" width="40px"></td>
-            <td>0001</td>
-            <td>Lorem ipsum dolor sit amet</td>
-            <td>Lorem Ipsum</td>
-            <td>20</td>
-            <td>$ 5.00</td>
-            <td>$ 10.00</td>
-            <td>2017-12-11 12:05:32</td>
-            <td>
-
-              <div class="btn-group">
-                  
-                <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
-
-                <button class="btn btn-danger"><i class="fa fa-times"></i></button>
-
-              </div>  
-
-            </td>
-
-          </tr>
-
-          <tr>
-            <td>1</td>
-            <td><img src="./../../../assets/img/productos/default/anonymous.png" class="img-thumbnail" width="40px"></td>
-            <td>0001</td>
-            <td>Lorem ipsum dolor sit amet</td>
-            <td>Lorem Ipsum</td>
-            <td>20</td>
-            <td>$ 5.00</td>
-            <td>$ 10.00</td>
-            <td>2017-12-11 12:05:32</td>
-            <td>
-
-              <div class="btn-group">
-                  
-                <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
-
-                <button class="btn btn-danger"><i class="fa fa-times"></i></button>
-
-              </div>  
-
-            </td>
-
-          </tr>
+         
 
 
 

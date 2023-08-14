@@ -2,6 +2,7 @@ import { ProductosService } from './../../services/productos.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-productos',
@@ -17,14 +18,14 @@ export class ProductosComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.validacionProductos = this.fb.group({
-      nuevoCodigo: ['', [Validators.required]],
-      nuevaDescripcion: ['', [Validators.required]],
-      nuevaCategoria: ['', [Validators.required]],
-      nuevoStock: ['', [Validators.required]],
-      nuevoPrecioCompra: ['', [Validators.required]],
-      nuevoPrecioVenta: ['', [Validators.required]],
+      codigo: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]],
+      categoria: ['', [Validators.required]],
+      stock: ['', [Validators.required]],
+      precioCompra: ['', [Validators.required]],
+      precioVenta: ['', [Validators.required]],
       //  nuevaImagen:  ['', ],
-      nuevasubCategoria: [''],
+      subCategoria: [''],
       productoAnterior: [''],
       porcentaje: [''],
     });
@@ -34,132 +35,132 @@ export class ProductosComponent implements OnInit {
   }
 
   user_validation_messages = {
-    nuevoCodigo: [
+    codigo: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
       },
     ],
 
-    nuevaDescripcion: [
+    descripcion: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
       },
     ],
-    nuevaCategoria: [
+    categoria: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
       },
     ],
-    nuevoStock: [
+    stock: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
       },
     ],
-    nuevoPrecioCompra: [
+    precioCompra: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
       },
     ],
-    nuevoPrecioVenta: [
+    precioVenta: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
       },
     ],
   };
-  get nuevoCodigoValido() {
+  get codigoValido() {
     return (
-      this.validacionProductos.get(' nuevoCodigo')?.dirty &&
-      this.validacionProductos.get(' nuevoCodigo')?.touched
+      this.validacionProductos.get('codigo')?.dirty &&
+      this.validacionProductos.get('codigo')?.touched
     );
   }
 
-  get nuevoCodigoNoValido() {
+  get codigoNoValido() {
     return (
-      this.validacionProductos.get(' nuevoCodigo')?.invalid &&
-      this.validacionProductos.get(' nuevoCodigo')?.touched
+      this.validacionProductos.get('codigo')?.invalid &&
+      this.validacionProductos.get('codigo')?.touched
     );
   }
-  get nuevaCategoriaValido() {
+  get categoriaValido() {
     return (
-      this.validacionProductos.get(' nuevaCategoria')?.dirty &&
-      this.validacionProductos.get(' nuevaCategoria')?.touched
-    );
-  }
-
-  get nuevaCategoriaNoValido() {
-    return (
-      this.validacionProductos.get(' nuevaCategoria')?.invalid &&
-      this.validacionProductos.get(' nuevaCategoria')?.touched
-    );
-  }
-  get nuevoStockValido() {
-    return (
-      this.validacionProductos.get('nuevoStock')?.dirty &&
-      this.validacionProductos.get('nuevoStock')?.touched
+      this.validacionProductos.get('categoria')?.dirty &&
+      this.validacionProductos.get('categoria')?.touched
     );
   }
 
-  get nuevoStockNoValido() {
+  get categoriaNoValido() {
     return (
-      this.validacionProductos.get('nuevoStock')?.invalid &&
-      this.validacionProductos.get('nuevoStock')?.touched
+      this.validacionProductos.get('categoria')?.invalid &&
+      this.validacionProductos.get('categoria')?.touched
     );
   }
-  get nuevoPrecioCompraValido() {
+  get stockValido() {
     return (
-      this.validacionProductos.get('nuevoPrecioCompra')?.dirty &&
-      this.validacionProductos.get('nuevoPrecioCompra')?.touched
-    );
-  }
-
-  get nuevoPrecioCompraNoValido() {
-    return (
-      this.validacionProductos.get('nuevoPrecioCompra')?.invalid &&
-      this.validacionProductos.get('nuevoPrecioCompra')?.touched
-    );
-  }
-  get nuevoPrecioVentaValido() {
-    return (
-      this.validacionProductos.get(' nuevoPrecioVenta')?.dirty &&
-      this.validacionProductos.get(' nuevoPrecioVenta')?.touched
+      this.validacionProductos.get('stock')?.dirty &&
+      this.validacionProductos.get('stock')?.touched
     );
   }
 
-  get nuevoPrecioVentaNoValido() {
+  get stockNoValido() {
     return (
-      this.validacionProductos.get(' nuevoPrecioVenta')?.invalid &&
-      this.validacionProductos.get(' nuevoPrecioVenta')?.touched
+      this.validacionProductos.get('stock')?.invalid &&
+      this.validacionProductos.get('stock')?.touched
     );
   }
-  get nuevaDescripcionValido() {
+  get precioCompraValido() {
     return (
-      this.validacionProductos.get('nuevaDescripcion')?.dirty &&
-      this.validacionProductos.get('nuevaDescripcion')?.touched
+      this.validacionProductos.get('precioCompra')?.dirty &&
+      this.validacionProductos.get('precioCompra')?.touched
     );
   }
 
-  get nuevaDescripcionNoValido() {
+  get precioCompraNoValido() {
     return (
-      this.validacionProductos.get('nuevaDescripcion')?.invalid &&
-      this.validacionProductos.get('nuevaDescripcion')?.touched
+      this.validacionProductos.get('precioCompra')?.invalid &&
+      this.validacionProductos.get('precioCompra')?.touched
+    );
+  }
+  get precioVentaValido() {
+    return (
+      this.validacionProductos.get('precioVenta')?.dirty &&
+      this.validacionProductos.get('precioVenta')?.touched
+    );
+  }
+
+  get precioVentaNoValido() {
+    return (
+      this.validacionProductos.get('precioVenta')?.invalid &&
+      this.validacionProductos.get('precioVenta')?.touched
+    );
+  }
+  get descripcionValido() {
+    return (
+      this.validacionProductos.get('descripcion')?.dirty &&
+      this.validacionProductos.get('descripcion')?.touched
+    );
+  }
+
+  get descripcionNoValido() {
+    return (
+      this.validacionProductos.get('descripcion')?.invalid &&
+      this.validacionProductos.get('descripcion')?.touched
     );
   }
 
   addProductos() {
     const validacionProductos: any = {
-      nuevoCodigo: this.validacionProductos.value.nuevoCodigo,
-      nuevaDescripcion: this.validacionProductos.value.nuevaDescripcion,
-      nuevaCategoria: this.validacionProductos.value.nuevaCategoria,
-      nuevoStock: this.validacionProductos.value.nuevoStock,
-      nuevoPrecioCompra: this.validacionProductos.value.nuevoPrecioCompra,
-      nuevoPrecioVenta: this.validacionProductos.value.nuevoPrecioVenta,
-      nuevasubCategoria: this.validacionProductos.value.nuevasubCategoria,
+      codigo: this.validacionProductos.value.codigo,
+      descripcion: this.validacionProductos.value.descripcion,
+      categoria: this.validacionProductos.value.categoria,
+      stock: this.validacionProductos.value.stock,
+      precioCompra: this.validacionProductos.value.precioCompra,
+      precioVenta: this.validacionProductos.value.precioVenta,
+      subCategoria: this.validacionProductos.value.subCategoria,
       productoAnterior: this.validacionProductos.value.productoAnterior,
       porcentaje: this.validacionProductos.value.porcentaje,
       // nuevaImagen: this.validacionProductos.value.nuevaImage,
@@ -178,7 +179,7 @@ export class ProductosComponent implements OnInit {
 
   getProduct() {
     this.ProductosService.getProducto().subscribe((data) => {
-      this.productos =[];
+      this.productos = [];
       data.forEach((element: any) => {
         // console.log(element.payload.doc.id)
         this.productos.push({
@@ -190,15 +191,26 @@ export class ProductosComponent implements OnInit {
     });
   }
 
-  delete(id: string){
-    this.ProductosService.delete(id).then(()=> {
-      this.toastr.error(
+  delete(id: string) {
+   
+    let  categoria = this.productos.find(item => item.id == id);
+    Swal.fire({
+      title: 'Esta seguro?',
+      text:  `¿Esta seguro de eliminar la categoria ${categoria? categoria.categoria: ''}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si,Eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+    if (result.isConfirmed) {
+    this.ProductosService.delete(id)
       
-        'Producto Eliminado',  'El producto fue eliminado con exito!',
-        { positionClass: 'toast-bottom-right' }
-      )
-    }).catch(error =>{
-      console.log(error)
-    })
+        Swal.fire( 'Categoria eliminada',
+        'La categoria ha sido eliminado con exito',
+        'success');
+      }
+    });
   }
 }

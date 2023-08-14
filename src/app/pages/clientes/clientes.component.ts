@@ -2,6 +2,7 @@ import { ClientesService } from './../../services/clientes.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-clientes',
@@ -17,8 +18,8 @@ export class ClientesComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.validacionClientes = this.fb.group({
-      nuevoCliente: ['', [Validators.required]],
-      nuevoDocumentoId: [
+      nombre: ['', [Validators.required]],
+      documento: [
         '',
         [
           Validators.required,
@@ -26,7 +27,7 @@ export class ClientesComponent implements OnInit {
           Validators.maxLength(13),
         ],
       ],
-      nuevoEmail: [
+      email: [
         '',
         [
           Validators.required,
@@ -35,7 +36,7 @@ export class ClientesComponent implements OnInit {
           ),
         ],
       ],
-      nuevoTelefono: [
+      telefono: [
         '',
         [
           Validators.required,
@@ -43,8 +44,8 @@ export class ClientesComponent implements OnInit {
           Validators.maxLength(10),
         ],
       ],
-      nuevaFechaNacimiento: [''],
-      nuevaDireccion: ['', [Validators.required]],
+      fechaNacimiento: [''],
+      direccion: ['', [Validators.required]],
     });
   }
   ngOnInit(): void {
@@ -52,20 +53,20 @@ export class ClientesComponent implements OnInit {
   }
 
   user_validation_messages = {
-    nuevoCliente: [
+    nombre: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
       },
     ],
-    nuevoDocumentoId: [
+    documento: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
       },
       { type: 'minlength', message: 'Maximo 10 characters.' },
     ],
-    nuevoEmail: [
+    email: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
@@ -73,94 +74,94 @@ export class ClientesComponent implements OnInit {
       { type: 'pattern', message: 'Ejemplo (desarrollandoideas@gmail.com)' },
     ],
 
-    nuevoTelefono: [
+    telefono: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
       },
       { type: 'minlength', message: 'Maximo 10 characters.' },
     ],
-    nuevaDireccion: [
+    direccion: [
       {
         type: 'required',
         message: 'Campo obligatorio.',
       },
     ],
   };
-  get nuevoClienteValido() {
+  get nombreValido() {
     return (
-      this.validacionClientes.get('nuevoCliente')?.dirty &&
-      this.validacionClientes.get('nuevoCliente')?.touched
+      this.validacionClientes.get('nombre')?.dirty &&
+      this.validacionClientes.get('nombre')?.touched
     );
   }
 
-  get nuevoClienteNoValido() {
+  get nombreNoValido() {
     return (
-      this.validacionClientes.get('nuevoCliente')?.invalid &&
-      this.validacionClientes.get('inuevoCliente')?.touched
+      this.validacionClientes.get('nombre')?.invalid &&
+      this.validacionClientes.get('nombre')?.touched
     );
   }
-  get nuevoDocumentoIdValido() {
+  get documentoValido() {
     return (
-      this.validacionClientes.get('nuevoDocumentoId')?.dirty &&
-      this.validacionClientes.get('nuevoDocumentoId')?.touched
-    );
-  }
-
-  get nuevoDocumentoIdNoValido() {
-    return (
-      this.validacionClientes.get('nuevoDocumentoId')?.invalid &&
-      this.validacionClientes.get('nuevoDocumentoId')?.touched
-    );
-  }
-  get nuevoEmailValido() {
-    return (
-      this.validacionClientes.get('nuevoEmail')?.dirty &&
-      this.validacionClientes.get('nuevoEmail')?.touched
+      this.validacionClientes.get('documento')?.dirty &&
+      this.validacionClientes.get('documento')?.touched
     );
   }
 
-  get nuevoEmailNoValido() {
+  get documentoNoValido() {
     return (
-      this.validacionClientes.get('nuevoEmail')?.invalid &&
-      this.validacionClientes.get('nuevoEmail')?.touched
+      this.validacionClientes.get('documento')?.invalid &&
+      this.validacionClientes.get('documento')?.touched
     );
   }
-  get nuevoTelefonoValido() {
+  get emailValido() {
     return (
-      this.validacionClientes.get(' nuevoTelefono')?.dirty &&
-      this.validacionClientes.get(' nuevoTelefono')?.touched
-    );
-  }
-
-  get nuevoTelefonoNoValido() {
-    return (
-      this.validacionClientes.get(' nuevoTelefono')?.invalid &&
-      this.validacionClientes.get(' nuevoTelefono')?.touched
-    );
-  }
-  get nuevaDireccionValido() {
-    return (
-      this.validacionClientes.get('nuevaDireccion')?.dirty &&
-      this.validacionClientes.get('nuevaDireccion')?.touched
+      this.validacionClientes.get('email')?.dirty &&
+      this.validacionClientes.get('email')?.touched
     );
   }
 
-  get nuevaDireccionNoValido() {
+  get emailNoValido() {
     return (
-      this.validacionClientes.get('nuevaDireccion')?.invalid &&
-      this.validacionClientes.get('nuevaDireccion')?.touched
+      this.validacionClientes.get('email')?.invalid &&
+      this.validacionClientes.get('email')?.touched
+    );
+  }
+  get telefonoValido() {
+    return (
+      this.validacionClientes.get('telefono')?.dirty &&
+      this.validacionClientes.get('telefono')?.touched
+    );
+  }
+
+  get telefonoNoValido() {
+    return (
+      this.validacionClientes.get('telefono')?.invalid &&
+      this.validacionClientes.get('telefono')?.touched
+    );
+  }
+  get direccionValido() {
+    return (
+      this.validacionClientes.get('direccion')?.dirty &&
+      this.validacionClientes.get('direccion')?.touched
+    );
+  }
+
+  get direccionNoValido() {
+    return (
+      this.validacionClientes.get('direccion')?.invalid &&
+      this.validacionClientes.get('direccion')?.touched
     );
   }
 
   addClient() {
     const validacionClientes: any = {
-      nuevoCliente: this.validacionClientes.value.nuevoCliente,
-      nuevoDocumentoId: this.validacionClientes.value.nuevoDocumentoId,
-      nuevoEmail: this.validacionClientes.value.nuevoEmail,
-      nuevoTelefono: this.validacionClientes.value.nuevoTelefono,
-      nuevaFechaNacimiento: this.validacionClientes.value.nuevaFechaNacimiento,
-      nuevaDireccion: this.validacionClientes.value.nuevaDireccion,
+      nombre: this.validacionClientes.value.nombre,
+      documento: this.validacionClientes.value.documento,
+      email: this.validacionClientes.value.email,
+      telefono: this.validacionClientes.value.telefono,
+      fechaNacimiento: this.validacionClientes.value.fechaNacimiento,
+      direccion: this.validacionClientes.value.direccion,
     };
     this.clientesService
       .addClient(validacionClientes)
@@ -190,14 +191,25 @@ export class ClientesComponent implements OnInit {
 
   
   deleteClient(id: string){
-    this.clientesService.deleteClient(id).then(()=> {
-      this.toastr.error(
+   
+    let  categoria = this.clientes.find(item => item.id == id);
+    Swal.fire({
+      title: 'Esta seguro?',
+      text:  `¿Esta seguro de eliminar la categoria ${categoria? categoria.categoria: ''}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si,Eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+    if (result.isConfirmed) {
+    this.clientesService.deleteClient(id)
       
-        'Cliente Eliminado',  'El cliente fue eliminado con exito!',
-        { positionClass: 'toast-bottom-right' }
-      )
-    }).catch(error =>{
-      console.log(error)
-    })
+        Swal.fire( 'Categoria eliminada',
+        'La categoria ha sido eliminado con exito',
+        'success');
+      }
+    });
   }
 }

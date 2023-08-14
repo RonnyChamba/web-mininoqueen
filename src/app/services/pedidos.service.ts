@@ -1,17 +1,30 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PedidosService {
+  private refresh = new Subject<void>();
 
-  constructor(private afs: AngularFirestore) { }
+  get getRefresh() {
+    return this.refresh;
+  }
+  constructor(private afs: AngularFirestore) {}
 
+  getPedidos(): Observable<any> {
+    return this.afs
+      .collection('pedidos')
+      .snapshotChanges()
+      .pipe(
+        tap(() => {
+          this.refresh.next();
+        })
+      );
+  }
 
-  
-  getPedidos():Observable<any> {
-    return this.afs.collection('pedidos').snapshotChanges();
+  deletePedidos(id: string): Promise<any> {
+    return this.afs.collection('pedidos').doc(id).delete();
   }
 }

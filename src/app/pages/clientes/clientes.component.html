@@ -59,12 +59,12 @@
 
           <tr  *ngFor="let client of clientes">
             <td>1</td>
-            <td>{{client.nuevoCliente}}</td>
-            <td>{{client.nuevoDocumentoId}} </td>
-            <td>{{client.nuevoEmail}} </td>
-            <td>{{client.nuevoTelefono}}</td>
-            <td>{{client.nuevaDireccion}}</td>
-            <td>{{client.nuevaFechaNacimiento}}</td>
+            <td>{{client.nombre}}</td>
+            <td>{{client.documento}} </td>
+            <td>{{client.email}} </td>
+            <td>{{client.telefono}}</td>
+            <td>{{client.direccion}}</td>
+            <td>{{client.fechaNacimiento}}</td>
             <td></td>
             <td></td>
             <td></td>
@@ -140,21 +140,21 @@
 
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
 
-                <input type="text" class="form-control input-lg" formControlName="nuevoCliente"
+                <input type="text" class="form-control input-lg" formControlName="nombre"
                   placeholder="Ingresar nombre">
 
               </div>
               <div
-                *ngIf="validacionClientes.controls['nuevoCliente'].invalid && (validacionClientes.controls['nuevoCliente'].dirty || validacionClientes.controls['nuevoCliente'].touched)"
+                *ngIf="validacionClientes.controls['nombre'].invalid && (validacionClientes.controls['nombre'].dirty || validacionClientes.controls['nombre'].touched)"
                 class="form-text text-danger">
-                <div *ngFor="let validation of user_validation_messages.nuevoCliente">
+                <div *ngFor="let validation of user_validation_messages.nombre">
                   <div style="font-size: smaller !important;"
-                    *ngIf="validacionClientes.get('nuevoCliente')?.hasError (validation.type) && (validacionClientes.get('nuevoCliente')?.dirty || validacionClientes.get('nuevoCliente')?.touched)">
+                    *ngIf="validacionClientes.get('nombre')?.hasError (validation.type) && (validacionClientes.get('nombre')?.dirty || validacionClientes.get('nombre')?.touched)">
                     {{validation.message}}
                   </div>
                 </div>
               </div>
-              <small *ngIf="nuevoClienteNoValido"
+              <small *ngIf="nombreNoValido"
                 class="form-text text-danger animate__animated animate__heartBeat"></small>
 
             </div>
@@ -167,21 +167,21 @@
 
                 <span class="input-group-addon"><i class="fa fa-key"></i></span>
 
-                <input type="text"  class="form-control input-lg" formControlName="nuevoDocumentoId"
+                <input type="text"  class="form-control input-lg" formControlName="documento"
                   placeholder="Ingresar documento" maxlength="13" minlength="10" >
 
               </div>
               <div
-              *ngIf="validacionClientes.controls['nuevoDocumentoId'].invalid && (validacionClientes.controls['nuevoDocumentoId'].dirty || validacionClientes.controls['nuevoDocumentoId'].touched)"
+              *ngIf="validacionClientes.controls['documento'].invalid && (validacionClientes.controls['documento'].dirty || validacionClientes.controls['documento'].touched)"
               class="form-text text-danger">
-              <div *ngFor="let validation of user_validation_messages.nuevoCliente">
+              <div *ngFor="let validation of user_validation_messages.documento">
                 <div style="font-size: smaller !important;"
-                  *ngIf="validacionClientes.get('nuevoDocumentoId')?.hasError (validation.type) && (validacionClientes.get('nuevoDocumentoId')?.dirty || validacionClientes.get('nuevoDocumentoId')?.touched)">
+                  *ngIf="validacionClientes.get('documento')?.hasError (validation.type) && (validacionClientes.get('documento')?.dirty || validacionClientes.get('documento')?.touched)">
                   {{validation.message}}
                 </div>
               </div>
             </div>
-            <small *ngIf="nuevoDocumentoIdNoValido"
+            <small *ngIf="documentoNoValido"
               class="form-text text-danger animate__animated animate__heartBeat"></small>
 
             </div>
@@ -194,21 +194,21 @@
 
                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
 
-                <input type="email" class="form-control input-lg" formControlName="nuevoEmail"
+                <input type="email" class="form-control input-lg" formControlName="email"
                   placeholder="Ingresar email">
 
               </div>
               <div
-              *ngIf="validacionClientes.controls['nuevoEmail'].invalid && (validacionClientes.controls['nuevoEmail'].dirty || validacionClientes.controls['nuevoEmail'].touched)"
+              *ngIf="validacionClientes.controls['email'].invalid && (validacionClientes.controls['email'].dirty || validacionClientes.controls['email'].touched)"
               class="form-text text-danger">
-              <div *ngFor="let validation of user_validation_messages.nuevoCliente">
+              <div *ngFor="let validation of user_validation_messages.email">
                 <div style="font-size: smaller !important;"
-                  *ngIf="validacionClientes.get('nuevoEmail')?.hasError (validation.type) && (validacionClientes.get('nuevoEmail')?.dirty || validacionClientes.get('nuevoEmail')?.touched)">
+                  *ngIf="validacionClientes.get('email')?.hasError (validation.type) && (validacionClientes.get('email')?.dirty || validacionClientes.get('email')?.touched)">
                   {{validation.message}}
                 </div>
               </div>
             </div>
-            <small *ngIf="nuevoEmailNoValido"
+            <small *ngIf="emailNoValido"
               class="form-text text-danger animate__animated animate__heartBeat"></small>
 
             </div>
@@ -221,21 +221,21 @@
 
                 <span class="input-group-addon"><i class="fa fa-phone"></i></span>
 
-                <input type="text" class="form-control input-lg" formControlName="nuevoTelefono"
+                <input type="text" class="form-control input-lg" formControlName="telefono"
                   placeholder="Ingresar teléfono"  maxlength="10" minlength="10" >
 
               </div>
               <div
-              *ngIf="validacionClientes.controls['nuevoTelefono'].invalid && (validacionClientes.controls['nuevoTelefono'].dirty || validacionClientes.controls['nuevoTelefono'].touched)"
+              *ngIf="validacionClientes.controls['telefono'].invalid && (validacionClientes.controls['telefono'].dirty || validacionClientes.controls['telefono'].touched)"
               class="form-text text-danger">
-              <div *ngFor="let validation of user_validation_messages.nuevoTelefono">
+              <div *ngFor="let validation of user_validation_messages.telefono">
                 <div style="font-size: smaller !important;"
-                  *ngIf="validacionClientes.get('nuevoTelefono')?.hasError (validation.type) && (validacionClientes.get('nuevoTelefono')?.dirty || validacionClientes.get('nuevoTelefono')?.touched)">
+                  *ngIf="validacionClientes.get('telefono')?.hasError (validation.type) && (validacionClientes.get('telefono')?.dirty || validacionClientes.get('telefono')?.touched)">
                   {{validation.message}}
                 </div>
               </div>
             </div>
-            <small *ngIf="nuevoTelefonoNoValido"
+            <small *ngIf="telefonoNoValido"
               class="form-text text-danger animate__animated animate__heartBeat"></small>
 
             </div>
@@ -248,21 +248,21 @@
 
                 <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
 
-                <input type="text" class="form-control input-lg" formControlName="nuevaDireccion"
+                <input type="text" class="form-control input-lg" formControlName="direccion"
                   placeholder="Ingresar dirección">
 
               </div>
               <div
-              *ngIf="validacionClientes.controls['nuevaDireccion'].invalid && (validacionClientes.controls['nuevaDireccion'].dirty || validacionClientes.controls['nuevaDireccion'].touched)"
+              *ngIf="validacionClientes.controls['direccion'].invalid && (validacionClientes.controls['direccion'].dirty || validacionClientes.controls['direccion'].touched)"
               class="form-text text-danger">
-              <div *ngFor="let validation of user_validation_messages.nuevaDireccion">
+              <div *ngFor="let validation of user_validation_messages.direccion">
                 <div style="font-size: smaller !important;"
-                  *ngIf="validacionClientes.get('nuevaDireccion')?.hasError (validation.type) && (validacionClientes.get('nuevaDireccion')?.dirty || validacionClientes.get('nuevaDireccion')?.touched)">
+                  *ngIf="validacionClientes.get('direccion')?.hasError (validation.type) && (validacionClientes.get('direccion')?.dirty || validacionClientes.get('direccion')?.touched)">
                   {{validation.message}}
                 </div>
               </div>
             </div>
-            <small *ngIf="nuevaDireccionNoValido"
+            <small *ngIf="direccionNoValido"
               class="form-text text-danger animate__animated animate__heartBeat"></small>
 
             </div>
@@ -275,7 +275,7 @@
 
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
-                <input type="text" class="form-control input-lg" formControlName="nuevaFechaNacimiento"
+                <input type="text" class="form-control input-lg" formControlName="fechaNacimiento"
                   placeholder="Ingresar fecha nacimiento" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask>
 
               </div>
@@ -294,7 +294,7 @@
 
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
 
-          <button type="submit" class="btn btn-primary" [disabled]="!cuentaForm.form.valid" (click)="addClient()">Guardar cliente</button>
+          <button type="submit" class="btn btn-primary"  data-dismiss="modal" [disabled]="!cuentaForm.form.valid" (click)="addClient()">Guardar cliente</button>
 
         </div>
 

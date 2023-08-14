@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CategoriaService } from 'src/app/services/categoria.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-categoria',
@@ -10,21 +11,20 @@ import { CategoriaService } from 'src/app/services/categoria.service';
 })
 export class CategoriaComponent implements OnInit {
   validacionCategoria: FormGroup;
-  categoria: any[]=[];
+  categoria: any[] = [];
   constructor(
     private fb: FormBuilder,
     private CategoriaService: CategoriaService,
     private toastr: ToastrService
   ) {
-    
-  this.validacionCategoria = this.fb.group({
-    categoria: ['', Validators.required],
-  });
+    this.validacionCategoria = this.fb.group({
+      categoria: ['', [Validators.required]],
+     subcategoria: ['',],
+    });
   }
   ngOnInit(): void {
     this.getCategoria();
   }
-
 
   user_validation_messages = {
     categoria: [
@@ -49,10 +49,26 @@ export class CategoriaComponent implements OnInit {
     );
   }
 
-  
+  addCategoria() {
+    const validacionCategoria: any = {
+      categoria: this.validacionCategoria.value.categoria,
+      subcategoria: this.validacionCategoria.value.subcategoria,
+    };
+    this.CategoriaService.addCategoria(validacionCategoria)
+
+      .then(() =>
+        this.toastr.success(
+          'Categoria Registrado',
+          'La categoria fue registrado con exito!',
+          { positionClass: 'toast-bottom-right' }
+        )
+      )
+      .catch((error) => console.log(error));
+  }
+
   getCategoria() {
     this.CategoriaService.getCategoria().subscribe((data) => {
-      this.categoria =[];
+      this.categoria = [];
       data.forEach((element: any) => {
         // console.log(element.payload.doc.id)
         this.categoria.push({
@@ -64,5 +80,26 @@ export class CategoriaComponent implements OnInit {
     });
   }
 
+  deleteCategoria(id: string) {
 
+    let  categoria = this.categoria.find(item => item.id == id);
+    Swal.fire({
+      title: 'Esta seguro?',
+      text:  `¿Esta seguro de eliminar la categoria ${categoria? categoria.categoria: ''}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si,Eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+    if (result.isConfirmed) {
+    this.CategoriaService.deleteCategoria(id)
+      
+        Swal.fire( 'Categoria eliminada',
+        'La categoria ha sido eliminado con exito',
+        'success');
+      }
+    });
+  }
 }
