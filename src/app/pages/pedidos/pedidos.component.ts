@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 export class PedidosComponent  implements OnInit{
 
 pedidos: any[]=[];
+pedidosExistente = true;
 constructor(private pedidosService: PedidosService,
   private toastr: ToastrService){}
   ngOnInit(): void {
@@ -25,6 +26,7 @@ constructor(private pedidosService: PedidosService,
     this.pedidosService.getPedidos().subscribe((data) => {
       this.pedidos =[];
       data.forEach((element: any) => {
+        this.pedidosExistente = true;
         // console.log(element.payload.doc.id)
         this.pedidos.push({
           id: element.payload.doc.id,
@@ -58,5 +60,18 @@ constructor(private pedidosService: PedidosService,
         'success');
       }
     });
+  }
+
+  
+  editarPedidos(id: string) {
+    this.pedidosService.editarPedidos(id).subscribe(
+      (data) => {
+        this.pedidosExistente = true;
+      },
+      (error) => {
+        console.log(error.error);
+        Swal.fire('Mensaje del Sistema', '' + error.error.message, 'error');
+      }
+    );
   }
 }

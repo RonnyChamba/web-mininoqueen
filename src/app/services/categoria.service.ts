@@ -32,4 +32,9 @@ export class CategoriaService {
   deleteCategoria(id: string): Promise<any> {
     return this.afs.collection('categorias').doc(id).delete();
   }
+
+
+  editarCategoria(id: string):Observable<any>{
+    return this.afs.collection('categorias').doc(id).snapshotChanges();
+  }
 }

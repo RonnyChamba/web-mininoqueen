@@ -33,4 +33,8 @@ export class ProductosService implements OnInit {
   delete(id: string): Promise<any> {
     return this.afs.collection('productos').doc(id).delete();
   }
+  
+  editarProductos(id: string):Observable<any>{
+    return this.afs.collection('productos').doc(id).snapshotChanges();
+  }
 }

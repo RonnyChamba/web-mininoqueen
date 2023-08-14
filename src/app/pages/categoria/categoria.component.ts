@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 export class CategoriaComponent implements OnInit {
   validacionCategoria: FormGroup;
   categoria: any[] = [];
+  categoriaExistente: boolean = false;
   constructor(
     private fb: FormBuilder,
     private CategoriaService: CategoriaService,
@@ -19,7 +20,7 @@ export class CategoriaComponent implements OnInit {
   ) {
     this.validacionCategoria = this.fb.group({
       categoria: ['', [Validators.required]],
-     subcategoria: ['',],
+      subcategoria: [''],
     });
   }
   ngOnInit(): void {
@@ -56,13 +57,15 @@ export class CategoriaComponent implements OnInit {
     };
     this.CategoriaService.addCategoria(validacionCategoria)
 
-      .then(() =>
+      .then(() => {
+        this.categoriaExistente = true;
         this.toastr.success(
           'Categoria Registrado',
           'La categoria fue registrado con exito!',
           { positionClass: 'toast-bottom-right' }
-        )
-      )
+        );
+      })
+
       .catch((error) => console.log(error));
   }
 
@@ -81,25 +84,40 @@ export class CategoriaComponent implements OnInit {
   }
 
   deleteCategoria(id: string) {
-
-    let  categoria = this.categoria.find(item => item.id == id);
+    let categoria = this.categoria.find((item) => item.id == id);
     Swal.fire({
       title: 'Esta seguro?',
-      text:  `¿Esta seguro de eliminar la categoria ${categoria? categoria.categoria: ''}?`,
+      text: `¿Esta seguro de eliminar la categoria ${
+        categoria ? categoria.categoria : ''
+      }?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Si,Eliminar',
-      cancelButtonText: 'No, cancelar'
+      cancelButtonText: 'No, cancelar',
     }).then((result) => {
-    if (result.isConfirmed) {
-    this.CategoriaService.deleteCategoria(id)
-      
-        Swal.fire( 'Categoria eliminada',
-        'La categoria ha sido eliminado con exito',
-        'success');
+      if (result.isConfirmed) {
+        this.CategoriaService.deleteCategoria(id);
+
+        Swal.fire(
+          'Categoria eliminada',
+          'La categoria ha sido eliminado con exito',
+          'success'
+        );
       }
     });
+  }
+
+  editarCategoria(id: string) {
+    this.CategoriaService.editarCategoria(id).subscribe(
+      (data) => {
+        this.categoriaExistente = true;
+      },
+      (error) => {
+        console.log(error.error);
+        Swal.fire('Mensaje del Sistema', '' + error.error.message, 'error');
+      }
+    );
   }
 }

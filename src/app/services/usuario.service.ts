@@ -30,4 +30,9 @@ export class UsuarioService {
   deleteUser(id: string): Promise<any> {
     return this.afs.collection('usuarios').doc(id).delete();
   }
+
+  
+  editarUser(id: string):Observable<any>{
+    return this.afs.collection('usuarios').doc(id).snapshotChanges();
+  }
 }

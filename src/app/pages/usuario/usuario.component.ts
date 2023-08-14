@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 export class UsuarioComponent implements OnInit {
   validacionUsuario:FormGroup;
   usuarios:any[]=[];
+  userExistente :boolean=true;
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -135,7 +136,9 @@ export class UsuarioComponent implements OnInit {
     this.usuarioService.getUser().subscribe((data) => {
       this.usuarios = [];
       data.forEach((element: any) => {
-        // console.log(element.payload.doc.id)
+       
+        this.userExistente = true;
+        
         this.usuarios.push({
           id: element.payload.doc.id,
           ...element.payload.doc.data(),
@@ -167,5 +170,19 @@ export class UsuarioComponent implements OnInit {
         'success');
       }
     });
+  }
+
+
+  
+  editarUser(id: string) {
+    this.usuarioService.editarUser(id).subscribe(
+      (data) => {
+        this.userExistente = true;
+      },
+      (error) => {
+        console.log(error.error);
+        Swal.fire('Mensaje del Sistema', '' + error.error.message, 'error');
+      }
+    );
   }
 }

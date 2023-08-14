@@ -30,4 +30,10 @@ export class ClientesService {
   deleteClient(id: string): Promise<any> {
     return this.afs.collection('clientes').doc(id).delete();
   }
+
+
+  
+  editarCliente(id: string):Observable<any>{
+    return this.afs.collection('clientes').doc(id).snapshotChanges();
+  }
 }

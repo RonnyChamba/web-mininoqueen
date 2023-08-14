@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 export class ProductosComponent implements OnInit {
   validacionProductos: FormGroup;
   productos: any[] = [];
+  productoExistente = true;
   constructor(
     private fb: FormBuilder,
     private ProductosService: ProductosService,
@@ -182,6 +183,7 @@ export class ProductosComponent implements OnInit {
       this.productos = [];
       data.forEach((element: any) => {
         // console.log(element.payload.doc.id)
+        this.productoExistente = true;
         this.productos.push({
           id: element.payload.doc.id,
           ...element.payload.doc.data(),
@@ -212,5 +214,19 @@ export class ProductosComponent implements OnInit {
         'success');
       }
     });
+  }
+
+
+  
+  editarProducto(id: string) {
+    this.ProductosService.editarProductos(id).subscribe(
+      (data) => {
+        this.productoExistente = true;
+      },
+      (error) => {
+        console.log(error.error);
+        Swal.fire('Mensaje del Sistema', '' + error.error.message, 'error');
+      }
+    );
   }
 }

@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 export class ClientesComponent implements OnInit {
   validacionClientes: FormGroup;
   clientes: any[] = [];
+  clienteExistente = true;
   constructor(
     private fb: FormBuilder,
     private clientesService: ClientesService,
@@ -179,6 +180,7 @@ export class ClientesComponent implements OnInit {
     this.clientesService.getClient().subscribe((data) => {
       this.clientes = [];
       data.forEach((element: any) => {
+        this.clienteExistente = true;
         // console.log(element.payload.doc.id)
         this.clientes.push({
           id: element.payload.doc.id,
@@ -211,5 +213,19 @@ export class ClientesComponent implements OnInit {
         'success');
       }
     });
+  }
+
+  
+  
+  editarCliente(id: string) {
+    this.clientesService.editarCliente(id).subscribe(
+      (data) => {
+        this.clienteExistente = true;
+      },
+      (error) => {
+        console.log(error.error);
+        Swal.fire('Mensaje del Sistema', '' + error.error.message, 'error');
+      }
+    );
   }
 }

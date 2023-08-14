@@ -72,7 +72,8 @@
 
               <div class="btn-group">
 
-                <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
+                <button class="btn btn-warning" data-toggle="modal" data-target="#modalAgregarProducto"
+                (click)="editarProducto(productos.id)"><i class="fa fa-pencil"></i></button>
 
                 <button class="btn btn-danger"  (click)="delete(productos.id)"><i class="fa fa-times" ></i></button>
 
@@ -416,7 +417,8 @@ MODAL AGREGAR PRODUCTO
 
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
 
-          <button type="submit" class="btn btn-primary" [disabled]="!cuentaForm.form.valid" (click)=" addProductos()"  data-dismiss="modal">Guardar producto</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!cuentaForm.form.valid" (click)=" addProductos()"
+            data-dismiss="modal">{{productoExistente?'Actualizar Datos': 'Guardar producto'}}</button>
 
         </div>
 

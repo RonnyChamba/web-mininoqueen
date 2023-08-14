@@ -27,4 +27,9 @@ export class PedidosService {
   deletePedidos(id: string): Promise<any> {
     return this.afs.collection('pedidos').doc(id).delete();
   }
+
+  
+  editarPedidos(id: string):Observable<any>{
+    return this.afs.collection('pedidos').doc(id).snapshotChanges();
+  }
 }
