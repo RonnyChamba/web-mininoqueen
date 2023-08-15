@@ -60,23 +60,23 @@
   
           <tbody>
             
-            <tr>
+            <tr *ngFor="let vent of venta">
   
               <td>1</td>
   
-              <td>1000123</td>
+              <td>{{vent.codigo}}</td>
   
-              <td>Juan Villegas</td>
+              <td>{{vent.idCLiente}}</td>
   
-              <td>Julio Gómez</td>
+              <td>{{vent.idVendedor}}</td>
   
-              <td>TC-12412425346</td>
+              <td>{{vent.impuesto}}</td>
   
-              <td>$ 1,000.00</td>
+              <td>{{vent.neto}}</td>
   
-              <td>$ 1,190.00</td>
+              <td>{{vent.producto}}</td>
   
-              <td>2017-12-11 12:05:32</td>
+              <td>{{vent.total}}</td>
   
               <td>
   
@@ -84,7 +84,7 @@
                     
                   <button class="btn btn-info"><i class="fa fa-print"></i></button>
   
-                  <button class="btn btn-danger"><i class="fa fa-times"></i></button>
+                  <button class="btn btn-danger" (click)="deleteVenta(vent.id)"><i class="fa fa-times"></i></button>
   
                 </div>  
   

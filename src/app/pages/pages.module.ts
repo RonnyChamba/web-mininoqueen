@@ -13,6 +13,8 @@ import { InicioComponent } from './inicio/inicio.component';
 import { AdministrarVentasComponent } from './administrar-ventas/administrar-ventas.component';
 import { CrearVentaComponent } from './crear-venta/crear-venta.component';
 import { ReporteDeVentasComponent } from './reporte-de-ventas/reporte-de-ventas.component';
+import { UsuarioComponent } from './usuario/usuario.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -22,7 +24,7 @@ import { ReporteDeVentasComponent } from './reporte-de-ventas/reporte-de-ventas.
     ProductosComponent,
     CategoriaComponent,
     ClientesComponent,
-   
+    UsuarioComponent,
     PedidosComponent,
     PagesComponent,
     InicioComponent,
@@ -33,15 +35,18 @@ import { ReporteDeVentasComponent } from './reporte-de-ventas/reporte-de-ventas.
   imports: [
     CommonModule,
     RouterModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports:[
     DashboardComponent,
     ProductosComponent,
     CategoriaComponent,
-    ClientesComponent,
-   
-    PedidosComponent
+    ClientesComponent,   
+    PedidosComponent,
+    FormsModule,
+    ReactiveFormsModule
     
   ]
 
