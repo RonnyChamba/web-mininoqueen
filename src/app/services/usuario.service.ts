@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, Subject, tap } from 'rxjs';
 
+const COLLECTION_NAME = 'usuarios';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -34,5 +36,11 @@ export class UsuarioService {
   
   editarUser(id: string):Observable<any>{
     return this.afs.collection('usuarios').doc(id).snapshotChanges();
+  }
+
+  saveUserData(user: any) {
+    return this.afs.doc(`${COLLECTION_NAME}/${user.uid}`).set(user, {
+      merge: true
+    });
   }
 }

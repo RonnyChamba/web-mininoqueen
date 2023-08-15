@@ -4,6 +4,7 @@ import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Injectable, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -22,6 +23,8 @@ export class LoginService implements OnInit {
   logout() {
     return this.afAuth.signOut();
   }
+
+
 
 
 

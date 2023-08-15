@@ -37,4 +37,57 @@ export class ProductosService implements OnInit {
   editarProductos(id: string):Observable<any>{
     return this.afs.collection('productos').doc(id).snapshotChanges();
   }
+
+
+  
+  /**
+   * A este metodo se debera pasar el codigo de intermedio actual, para  filtrar solo los
+   * productos que pertenecen a ese usuario, esta pendiente de implementar
+   * @returns
+   */
+  getProductosByUser(codeIntermediario?: any): Observable<any> {
+    return this.afs
+      .collection('productos')
+      .snapshotChanges()
+      .pipe(
+        tap(() => {
+          this.refresh.next();
+        })
+      );
+  }
+
+  async  updateVentasProducto(uid: string, amount: any) {
+
+
+    const product = this.afs.collection('productos').doc(uid);
+
+    try {
+
+      
+    await this.afs.firestore.runTransaction(async (transaction) => {
+
+
+      const userDoc = await transaction.get(product.ref);
+
+      const  ventas = (userDoc.get('ventas') || 0) + amount;
+
+      transaction.update(product.ref, { ventas});
+    }
+    );
+
+    return Promise.resolve(true);
+
+    }catch(error){
+
+      console.log(error);
+      return Promise.reject(false);
+    }
+
+
+
+  }
 }
+
+
+
+

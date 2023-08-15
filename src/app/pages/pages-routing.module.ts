@@ -29,6 +29,7 @@ const routes: Routes = [
       { path: 'admin_ventas', component: AdministrarVentasComponent },
       { path: 'reporte', component: ReporteDeVentasComponent },
       { path: 'crear_venta', component: CrearVentaComponent },
+      { path: 'crear_venta/:idePedido', component: CrearVentaComponent },
     ],
   },
 ];

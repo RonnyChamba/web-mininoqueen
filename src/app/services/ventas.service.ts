@@ -30,4 +30,11 @@ export class VentasService {
   deleteVenta(id: string): Promise<any> {
     return this.afs.collection('ventas').doc(id).delete();
   }
+
+
+  saveVenta(venta: any) {
+    return this.afs.doc(`ventas/${venta.uid}`).set(venta, {
+      merge: true
+    });
+  }
 }

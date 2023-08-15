@@ -15,6 +15,7 @@ import { CrearVentaComponent } from './crear-venta/crear-venta.component';
 import { ReporteDeVentasComponent } from './reporte-de-ventas/reporte-de-ventas.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CountUploadPlanification, FormatDatePipe, TrimText } from '../../app/util/format-date.pipe';
 
 
 
@@ -30,7 +31,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     InicioComponent,
     AdministrarVentasComponent,
     CrearVentaComponent,
-    ReporteDeVentasComponent
+    ReporteDeVentasComponent,
+    FormatDatePipe
   ],
   imports: [
     CommonModule,

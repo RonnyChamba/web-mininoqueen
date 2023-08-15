@@ -14,7 +14,16 @@ export class CategoriaService {
 
   constructor(private afs: AngularFirestore) {}
 
-  addCategoria(categorias: any): Promise<any> {
+  addCategoria(categorias: any, uid?: any): Promise<any> {
+
+    console.log(categorias);
+    if (uid){
+      return this.afs.collection('categorias').doc(uid)
+      .update( {
+        categoria: categorias.categoria,
+      });
+    }
+
     return this.afs.collection('categorias').add(categorias);
   }
 
@@ -35,6 +44,6 @@ export class CategoriaService {
 
 
   editarCategoria(id: string):Observable<any>{
-    return this.afs.collection('categorias').doc(id).snapshotChanges();
+    return this.afs.collection('categorias').doc(id).get();
   }
 }

@@ -13,15 +13,23 @@ export class PedidosService {
   }
   constructor(private afs: AngularFirestore) {}
 
-  getPedidos(): Observable<any> {
+  getPedidos(estado: boolean): Observable<any> {
     return this.afs
-      .collection('pedidos')
+      .collection('pedidos',(ref) => ref.where("estado", "==", estado) )
       .snapshotChanges()
       .pipe(
         tap(() => {
           this.refresh.next();
         })
       );
+  }
+
+  getPedidosByIde(estado: boolean, uid:string) {
+    return this.afs
+      .collection('pedidos',(ref) =>
+       ref.where("estado", "==", estado)
+       .where("uid", "==", uid))
+       .get();
   }
 
   deletePedidos(id: string): Promise<any> {
@@ -32,4 +40,12 @@ export class PedidosService {
   editarPedidos(id: string):Observable<any>{
     return this.afs.collection('pedidos').doc(id).snapshotChanges();
   }
+
+  updateEstadoPedido(uid: string, estado: boolean): Promise<any> {
+
+    return this.afs.collection('pedidos')
+    .doc(uid)
+    .update({ estado: estado });
+  }
+
 }

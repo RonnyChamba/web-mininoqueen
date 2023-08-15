@@ -1,5 +1,6 @@
 import { PedidosService } from './../../services/pedidos.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 
@@ -12,10 +13,14 @@ export class PedidosComponent  implements OnInit{
 
 pedidos: any[]=[];
 pedidosExistente = true;
-constructor(private pedidosService: PedidosService,
-  private toastr: ToastrService){}
+constructor(
+  private pedidosService: PedidosService,
+  private toastr: ToastrService,
+  private router: Router)
+  {}
   ngOnInit(): void {
    this.getPedidos();
+   
   }
 
 
@@ -23,7 +28,7 @@ constructor(private pedidosService: PedidosService,
 
   
   getPedidos() {
-    this.pedidosService.getPedidos().subscribe((data) => {
+    this.pedidosService.getPedidos(false).subscribe((data) => {
       this.pedidos =[];
       data.forEach((element: any) => {
         this.pedidosExistente = true;
@@ -32,6 +37,8 @@ constructor(private pedidosService: PedidosService,
           id: element.payload.doc.id,
           ...element.payload.doc.data(),
         });
+
+        console.log(this.pedidos)
       });
      console.log(this.pedidos)
     });
@@ -73,5 +80,12 @@ constructor(private pedidosService: PedidosService,
         Swal.fire('Mensaje del Sistema', '' + error.error.message, 'error');
       }
     );
+  }
+
+  despacharPedido(pedido: any){
+
+    console.log(pedido)
+    this.router.navigate(['/dashboard/crear_venta', pedido.id])
+
   }
 }

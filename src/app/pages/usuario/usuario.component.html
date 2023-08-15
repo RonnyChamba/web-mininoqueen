@@ -62,7 +62,7 @@
 
             <td>{{user.perfil}}</td>
             <td><button class="btn btn-success btn-xs">Activado</button></td>
-            <td>2017-12-11 12:05:32</td>
+            <td>{{user?.ultimoLogin| formatDate}}</td>
             <td>
 
               <div class="btn-group">
@@ -186,15 +186,15 @@
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
 
                 <input type="password" class="form-control input-lg" placeholder="Ingresar contraseña"
-                  formControlName="Password">
+                  formControlName="password">
 
               </div>
               <div
-                *ngIf="validacionUsuario.controls['Password'].invalid && (validacionUsuario.controls['Password'].dirty || validacionUsuario.controls['Password'].touched)"
+                *ngIf="validacionUsuario.controls['password'].invalid && (validacionUsuario.controls['password'].dirty || validacionUsuario.controls['password'].touched)"
                 class="form-text text-danger">
                 <div *ngFor="let validation of user_validation_messages.Password">
                   <div style="font-size: smaller !important;"
-                    *ngIf="validacionUsuario.get('Password')?.hasError (validation.type) && (validacionUsuario.get('Password')?.dirty || validacionUsuario.get('Password')?.touched)">
+                    *ngIf="validacionUsuario.get('password')?.hasError (validation.type) && (validacionUsuario.get('password')?.dirty || validacionUsuario.get('password')?.touched)">
                     {{validation.message}}
                   </div>
                 </div>
@@ -206,7 +206,7 @@
 
             <!-- ENTRADA PARA SELECCIONAR SU PERFIL -->
 
-            <div class="form-group">
+            <!-- <div class="form-group">
 
               <div class="input-group">
 
@@ -223,7 +223,6 @@
                   <option value="Vendedor">Vendedor</option>
 
                 </select>
-
               </div>
               <div
                 *ngIf="validacionUsuario.controls['perfil'].invalid && (validacionUsuario.controls['perfil'].dirty || validacionUsuario.controls['perfil'].touched)"
@@ -237,7 +236,7 @@
               </div>
               <small *ngIf="perfilNoValido" class="form-text text-danger animate__animated animate__heartBeat"></small>
 
-            </div>
+            </div> -->
 
             <!-- ENTRADA PARA SUBIR FOTO -->
 
@@ -265,7 +264,7 @@
 
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
 
-          <button type="submit" class="btn btn-primary" [disabled]="!cuentaForm.form.valid"
+          <button type="button"  (click)="onSubmitForm()"  class="btn btn-primary" [disabled]="!cuentaForm.form.valid"
             data-dismiss="modal">{{userExistente?'Actualizar Datos': 'Guardar usuario'}}</button>
 
         </div>

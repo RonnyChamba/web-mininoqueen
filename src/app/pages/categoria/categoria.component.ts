@@ -13,6 +13,8 @@ export class CategoriaComponent implements OnInit {
   validacionCategoria: FormGroup;
   categoria: any[] = [];
   categoriaExistente: boolean = false;
+
+  categotyCurrent: any;
   constructor(
     private fb: FormBuilder,
     private CategoriaService: CategoriaService,
@@ -50,12 +52,23 @@ export class CategoriaComponent implements OnInit {
     );
   }
 
+  typeAction (status: boolean){
+
+    this.categoriaExistente = status;
+
+    this.validacionCategoria.reset();
+  }
   addCategoria() {
+
+
     const validacionCategoria: any = {
       categoria: this.validacionCategoria.value.categoria,
       subcategoria: this.validacionCategoria.value.subcategoria,
     };
-    this.CategoriaService.addCategoria(validacionCategoria)
+
+
+
+    this.CategoriaService.addCategoria(validacionCategoria, this.categoriaExistente? this.categotyCurrent.uid : null)
 
       .then(() => {
         this.categoriaExistente = true;
@@ -112,7 +125,19 @@ export class CategoriaComponent implements OnInit {
   editarCategoria(id: string) {
     this.CategoriaService.editarCategoria(id).subscribe(
       (data) => {
+
         this.categoriaExistente = true;
+
+         this.categotyCurrent = data.data();
+        
+        console.log(this.categotyCurrent);
+        
+        this.validacionCategoria.patchValue( {
+          categoria: this.categotyCurrent.categoria,
+        
+        });
+
+    
       },
       (error) => {
         console.log(error.error);
