@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
 import { AngularFireModule } from '@angular/fire/compat';
 import { timestamp } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { UploadFileService } from 'src/app/services/upload-file.service';
+import { MensajesServiceService } from 'src/app/services/mensajes-service.service';
 
 @Component({
   selector: 'app-usuario',
@@ -19,14 +21,20 @@ import { ToastrService } from 'ngx-toastr';
 export class UsuarioComponent implements OnInit {
   validacionUsuario: FormGroup;
   usuarios: any[] = [];
-  userExistente: boolean = true;
+  userExistente: boolean = false;
+  userEdit: any;
+
+  files: any;
+
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
     private firestore: AngularFirestore,
     private router: Router,
     private loginService: LoginService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private uploadFile: UploadFileService,
+    private messageServvice: MensajesServiceService
   ) {
     this.validacionUsuario = this.fb.group({
       nombre: ['', Validators.required],
@@ -131,43 +139,61 @@ export class UsuarioComponent implements OnInit {
   }
 
   async onSubmitForm() {
-    const dataUser = this.validacionUsuario.value;
-    dataUser.codigo = this.generaCadenaAleatoria(10);
-    dataUser.fecha = new Date();
+    let message = this.userExistente
+      ? 'Actualizando usuario ....'
+      : 'Registrando usuario ....';
 
-    try {
-      const result = await this.loginService.register({
-        email: dataUser.usuario,
-        password: dataUser.password,
-      });
+    this.messageServvice.loading(true, message);
 
-      console.log(result);
+    setTimeout(async () => {
+      // this.messageServvice.loading(false, '');
 
-      if (result) {
-        dataUser.uid = result.user?.uid;
-        dataUser.ultimoLogin = new Date();
-        dataUser.password = null;
+      try {
+        if (this.userExistente) {
+          await this.updateDataUser();
+        } else {
+          const dataUser = this.validacionUsuario.value;
+          dataUser.codigo = this.generaCadenaAleatoria(10);
+          dataUser.fecha = new Date();
 
-        await this.usuarioService.saveUserData(dataUser);
+          const result = await this.loginService.register({
+            email: dataUser.usuario,
+            password: dataUser.password,
+          });
 
-        this.toastr.success('Usuario creado con exito', 'Usuario creado');
+          console.log(result);
+
+          if (result) {
+            // cargar imagen
+
+            try {
+              if (this.files) {
+                const resources = await this.uploadFile.uploadFile(this.files);
+                dataUser.foto = resources.url;
+
+                console.log(resources);
+              }
+            } catch (error) {
+              console.log('Error al carga imagen del usuario', error);
+            }
+
+            dataUser.uid = result.user?.uid;
+            dataUser.ultimoLogin = new Date();
+            dataUser.password = null;
+
+            await this.usuarioService.saveUserData(dataUser);
+
+            this.toastr.success('Usuario creado con exito', 'Usuario creado');
+          }
+        }
+      } catch (error) {
+        console.log(error);
+        this.toastr.error('Error al crear usuario', 'Error');
+      } finally {
+        this.messageServvice.loading(false);
       }
-    } catch (error) {
-      console.log(error);
-      this.toastr.error('Error al crear usuario', 'Error');
-    }
+    }, 1200);
   }
-
-  // addUser(){
-  //   const validacionUsuario:any ={
-  //     nombre: this.validacionUsuario.value.nombre,
-  //     usuario: this.validacionUsuario.value.nuevoCodigo,
-  //     Password: this.validacionUsuario.value.Password,
-  //     nuevoCodigo: this.validacionUsuario.value.nuevoCodigo,
-  //     perfil: this.validacionUsuario.value. perfil,
-
-  //   }
-  // }
 
   public generaCadenaAleatoria(n: number): string {
     let result = '';
@@ -183,12 +209,14 @@ export class UsuarioComponent implements OnInit {
     this.usuarioService.getUser().subscribe((data) => {
       this.usuarios = [];
       data.forEach((element: any) => {
-        this.userExistente = true;
+        // this.userExistente = true;
 
         this.usuarios.push({
           id: element.payload.doc.id,
           ...element.payload.doc.data(),
         });
+
+        // console.log(this.usuarios);
       });
       // console.log(this.productos)
     });
@@ -224,11 +252,87 @@ export class UsuarioComponent implements OnInit {
     this.usuarioService.editarUser(id).subscribe(
       (data) => {
         this.userExistente = true;
+
+        // console.log(data);
+
+        if (data.payload.exists) {
+          this.userEdit = data.payload.data();
+          this.userEdit.id = data.payload.id;
+
+          this.validacionUsuario.patchValue({
+            nombre: this.userEdit.nombre,
+            usuario: this.userEdit.usuario,
+            password: this.userEdit.password,
+          });
+        }
+        console.log(this.userEdit);
+
+        this.validacionUsuario.get('usuario')?.disable();
+
+        // remove validators
+
+        this.validacionUsuario.get('password')?.clearValidators();
       },
       (error) => {
         console.log(error.error);
         Swal.fire('Mensaje del Sistema', '' + error.error.message, 'error');
       }
     );
+  }
+
+  // función para seleccionar un archivo
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+
+    console.log(file);
+    if (file && file.size > 0) {
+      this.files = file;
+    } else {
+      this.files = null;
+    }
+  }
+
+  resetForm() {
+    this.validacionUsuario.patchValue(
+      {
+        nombre: '',
+        usuario: '',
+        password: '',
+      },
+      { emitEvent: false }
+    );
+
+    this.files = null;
+    this.userExistente = false;
+
+    this.validacionUsuario.get('usuario')?.enable();
+
+    // add validators again to password
+
+    this.validacionUsuario.get('password')?.setValidators(Validators.required);
+  }
+
+  async updateDataUser() {
+    // verificar si la imagen se actualizara
+
+    if (this.files) {
+      // cargar imagen
+
+      try {
+        if (this.files) {
+          const resources = await this.uploadFile.uploadFile(this.files);
+          this.userEdit.foto = resources.url;
+          console.log(resources);
+        }
+      } catch (error) {
+        console.log('Error al carga imagen del usuario', error);
+      }
+    }
+    this.userEdit.nombre = this.validacionUsuario.value.nombre;
+    // await this.usuarioService.saveUserData(dataUser);
+
+    await this.usuarioService.updateUserData(this.userEdit.uid, this.userEdit);
+
+    this.toastr.success('Usuario actulizado con exito', '');
   }
 }

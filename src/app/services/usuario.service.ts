@@ -34,13 +34,20 @@ export class UsuarioService {
   }
 
   
-  editarUser(id: string):Observable<any>{
+  editarUser(id: string){
     return this.afs.collection('usuarios').doc(id).snapshotChanges();
   }
 
   saveUserData(user: any) {
     return this.afs.doc(`${COLLECTION_NAME}/${user.uid}`).set(user, {
       merge: true
+    });
+  }
+
+  updateUserData(uid:string,  user: any) {
+    return this.afs.doc(`${COLLECTION_NAME}/${uid}`).update({
+      nombre: user.nombre,
+      foto: user.foto,
     });
   }
 }

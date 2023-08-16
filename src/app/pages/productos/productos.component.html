@@ -197,13 +197,7 @@ MODAL AGREGAR PRODUCTO
 
                 <select class="form-control input-lg" formControlName="categoria">
 
-                  <option value="">Selecionar categoría</option>
-
-                  <option value="Taladros">Taladros</option>
-
-                  <option value="Andamios">Andamios</option>
-
-                  <option value="Equipos para construcción">Equipos para construcción</option>
+                  <option [value]="categoria.uid" *ngFor="let categoria of categorias; index as i" >{{categoria.categoria}}</option>
 
                 </select>
 
@@ -313,7 +307,7 @@ MODAL AGREGAR PRODUCTO
 
               <!-- ENTRADA PARA SELECCIONAR SUB CATEGORÍA -->
 
-              <div class="col-xs-6">
+              <div class="form-group">
 
                 <div class="input-group">
 
@@ -321,14 +315,7 @@ MODAL AGREGAR PRODUCTO
 
                   <select class="form-control input-lg" formControlName="subCategoria">
 
-                    <option value="">sub-categoría</option>
-
-                    <option value="Taladros">Taladros</option>
-
-                    <option value="Andamios">Andamios</option>
-
-                    <option value="Equipos para construcción">Equipos para construcción</option>
-
+                    <option [value]="subcate.uid" *ngFor="let subcate of subCategorias; index as i">{{subcate.nombre}}</option>
                   </select>
 
                 </div>
@@ -363,7 +350,7 @@ MODAL AGREGAR PRODUCTO
             </div>
             <!-- CHECKBOX PARA PORCENTAJE -->
 
-            <div class="col-xs-6">
+            <!-- <div class="col-xs-6">
 
               <div class="form-group">
 
@@ -375,11 +362,11 @@ MODAL AGREGAR PRODUCTO
 
               </div>
 
-            </div>
+            </div> -->
 
             <!-- ENTRADA PARA PORCENTAJE -->
 
-            <div class="col-xs-6" style="padding:0">
+            <!-- <div class="col-xs-6" style="padding:0">
 
               <div class="input-group">
 
@@ -389,7 +376,7 @@ MODAL AGREGAR PRODUCTO
 
               </div>
 
-            </div>
+            </div> -->
 
             <!-- ENTRADA PARA SUBIR FOTO -->
 

@@ -2,6 +2,7 @@ import { ProductosService } from './../../services/productos.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { CategoriaService } from 'src/app/services/categoria.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,11 +14,28 @@ export class ProductosComponent implements OnInit {
   validacionProductos: FormGroup;
   productos: any[] = [];
   productoExistente = true;
+
+  categorias: any[] = [];
+  subCategorias: any[] = [];
+
   constructor(
     private fb: FormBuilder,
     private ProductosService: ProductosService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private categoriaService: CategoriaService
   ) {
+  
+
+    this.createForm();
+  }
+  ngOnInit(): void {
+    this.onChangeValues();
+    this.getProduct();
+    this.getCategorias();
+  }
+
+  createForm() {
+    
     this.validacionProductos = this.fb.group({
       codigo: ['', [Validators.required]],
       descripcion: ['', [Validators.required]],
@@ -31,8 +49,37 @@ export class ProductosComponent implements OnInit {
       porcentaje: [''],
     });
   }
-  ngOnInit(): void {
-    this.getProduct();
+
+
+
+  onChangeValues(){
+
+    this.validacionProductos.get("categoria")?.valueChanges.subscribe((data) => {
+      
+      console.log(data);
+
+      if(data == ""){
+        this.subCategorias = [ {
+          uid: "",
+          nombre: "Seleccione una subcategoria",
+        } ];
+        this.validacionProductos.get("subCategoria")?.setValue("", {emitEvent: false});
+        return;
+      }else{
+        this.subCategorias = this.categorias.find(item => item.uid == data)?.subcategorias;
+
+        if (this.subCategorias.length <1  ){
+
+          this.subCategorias = [ {
+            uid: "",
+            nombre: "Seleccione una subcategoria",
+          } ];
+          this.validacionProductos.get("subCategoria")?.setValue("", {emitEvent: false});
+        }
+        
+      }
+    });
+
   }
 
   user_validation_messages = {
@@ -154,6 +201,10 @@ export class ProductosComponent implements OnInit {
   }
 
   addProductos() {
+
+    console.log(this.validacionProductos.value);
+    
+    return;
     const validacionProductos: any = {
       codigo: this.validacionProductos.value.codigo,
       descripcion: this.validacionProductos.value.descripcion,
@@ -216,8 +267,6 @@ export class ProductosComponent implements OnInit {
     });
   }
 
-
-  
   editarProducto(id: string) {
     this.ProductosService.editarProductos(id).subscribe(
       (data) => {
@@ -228,5 +277,37 @@ export class ProductosComponent implements OnInit {
         Swal.fire('Mensaje del Sistema', '' + error.error.message, 'error');
       }
     );
+  }
+
+
+  getCategorias(){
+
+
+    this.categoriaService.getCategoria().subscribe((data) => {
+      this.categorias = [];
+
+      this.categorias.push({
+        uid: "",
+        categoria: "Seleccione una categoria",
+        subcategorias: [{
+          uid: "",
+          nombre: "Seleccione una subcategoria",
+        }]
+      });
+
+      data.forEach((element: any) => {
+        // console.log(element.payload.doc.id)
+        this.categorias.push({
+          id: element.payload.doc.id,
+          ...element.payload.doc.data(),
+        });
+      });
+
+      console.log(this.categorias);
+      // console.log(this.productos)
+    }
+    );
+
+
   }
 }

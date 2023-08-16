@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CategoriaService } from 'src/app/services/categoria.service';
+import { generaCadenaAleatoria } from 'src/app/util/dataUtil';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,7 +23,7 @@ export class CategoriaComponent implements OnInit {
   ) {
     this.validacionCategoria = this.fb.group({
       categoria: ['', [Validators.required]],
-      subcategoria: [''],
+      subcategoria: [[], []],
     });
   }
   ngOnInit(): void {
@@ -52,28 +53,36 @@ export class CategoriaComponent implements OnInit {
     );
   }
 
-  typeAction (status: boolean){
-
+  typeAction(status: boolean) {
     this.categoriaExistente = status;
 
     this.validacionCategoria.reset();
   }
-  addCategoria() {
+  async addCategoria() {
+    if (this.categoriaExistente) {
+      await this.updateCategoria();
+      return;
+    }
 
+    const uid = generaCadenaAleatoria(10);
 
     const validacionCategoria: any = {
       categoria: this.validacionCategoria.value.categoria,
-      subcategoria: this.validacionCategoria.value.subcategoria,
+      subcategorias: [],
+      uid,
+      fecha: new Date(),
+      productos: [],
     };
 
+    console.log(validacionCategoria);
 
-
-    this.CategoriaService.addCategoria(validacionCategoria, this.categoriaExistente? this.categotyCurrent.uid : null)
+    // return;
+    this.CategoriaService.saveCategoria(uid, validacionCategoria)
 
       .then(() => {
-        this.categoriaExistente = true;
+        // this.categoriaExistente = true;
         this.toastr.success(
-          'Categoria Registrado',
+          'Categoria Registrada',
           'La categoria fue registrado con exito!',
           { positionClass: 'toast-bottom-right' }
         );
@@ -125,24 +134,50 @@ export class CategoriaComponent implements OnInit {
   editarCategoria(id: string) {
     this.CategoriaService.editarCategoria(id).subscribe(
       (data) => {
-
         this.categoriaExistente = true;
 
-         this.categotyCurrent = data.data();
-        
-        console.log(this.categotyCurrent);
-        
-        this.validacionCategoria.patchValue( {
-          categoria: this.categotyCurrent.categoria,
-        
-        });
+        this.categotyCurrent = data.data();
 
-    
+        console.log(this.categotyCurrent);
+
+        this.validacionCategoria.patchValue({
+          categoria: this.categotyCurrent.categoria,
+        });
       },
       (error) => {
         console.log(error.error);
         Swal.fire('Mensaje del Sistema', '' + error.error.message, 'error');
       }
     );
+  }
+
+  async updateCategoria() {
+    try {
+      console.log(this.categotyCurrent);
+
+      const data = {
+        categoria: this.validacionCategoria.value.categoria,
+      };
+
+      let isSuccess = await this.CategoriaService.updateCategoria(
+        this.categotyCurrent.uid,
+        data
+      );
+
+      if (isSuccess) {
+        await this.CategoriaService.updateNombreProductos(
+          this.categotyCurrent.uid,
+          data
+        );
+        this.toastr.success(
+          'Categoria Actualizada',
+          'La categoria fue actualizada con exito!',
+          { positionClass: 'toast-bottom-right' }
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      this.toastr.error('Error al actualizar ', '');
+    }
   }
 }
