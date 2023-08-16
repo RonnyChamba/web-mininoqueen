@@ -1,44 +1,40 @@
 <section class="content-header">
-
-  <h1>
-
-    Administrar productos
-
-  </h1>
+  <h1>Administrar productos</h1>
 
   <ol class="breadcrumb">
-
-    <li><a [routerLink]="['/dashboard/inicio' ]"><i class="fa fa-dashboard"></i> Inicio</a></li>
+    <li>
+      <a [routerLink]="['/dashboard/inicio']"
+        ><i class="fa fa-dashboard"></i> Inicio</a
+      >
+    </li>
 
     <li class="active">Administrar productos</li>
-
   </ol>
-
 </section>
 
 <section class="content">
-
   <div class="box">
-
     <div class="box-header with-border">
-
-      <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarProducto">
-
+      <button
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#modalAgregarProducto"
+      (click)="newProducto()"  >
         Agregar producto
-
       </button>
-
     </div>
 
     <div class="box-body">
-      <h5 style="margin-top: 30px;" *ngIf="productos.length == 0">No hay datos para mostrar</h5>
-      <table class="table table-bordered table-striped dt-responsive tablas" *ngIf="productos.length > 0">
-
+      <h5 style="margin-top: 30px" *ngIf="productos.length == 0">
+        No hay datos para mostrar
+      </h5>
+      <table
+        class="table table-bordered table-striped dt-responsive tablas"
+        *ngIf="productos.length > 0"
+      >
         <thead>
-
           <tr>
-
-            <th style="width:10px">#</th>
+            <th style="width: 10px">#</th>
             <th>Imagen</th>
             <th>Código</th>
             <th>Descripción</th>
@@ -46,83 +42,72 @@
             <th>Stock</th>
             <th>Precio de compra</th>
             <th>Precio de venta</th>
-            <th>Sub Categoria</th>
-            <th>Producto Anterior</th>
+            <!-- <th>Sub Categoria</th> -->
+            <!-- <th>Producto Anterior</th> -->
             <th>Acciones</th>
-
           </tr>
-
         </thead>
 
         <tbody>
-
-          <tr *ngFor="let productos of productos">
-            <td>1</td>
-            <td><img src="./../../../assets/img/productos/default/anonymous.png" class="img-thumbnail" width="40px">
-            </td>
-            <td>{{productos.codigo}}</td>
-            <td>{{productos.descripcion}}</td>
-            <td>{{productos.categoria}}</td>
-            <td>{{productos.stock}}</td>
-            <td>{{productos.precioCompra | currency}}</td>
-            <td>{{productos.precioVenta | currency}}</td>
-            <td>{{productos.subCategoria}}</td>
-            <td>{{productos.productoAnterior}}</td>
+          <tr *ngFor="let produ of productos; index as i">
+            <td>{{i+1}}</td>
             <td>
-
-              <div class="btn-group">
-
-                <button class="btn btn-warning" data-toggle="modal" data-target="#modalAgregarProducto"
-                (click)="editarProducto(productos.id)"><i class="fa fa-pencil"></i></button>
-
-                <button class="btn btn-danger"  (click)="delete(productos.id)"><i class="fa fa-times" ></i></button>
-
-              </div>
-
+              <!-- ./../../../assets/img/productos/default/anonymous.png -->
+              <img
+                [src]="produ.imagen? produ.imagen : './../../../assets/img/productos/default/anonymous.png'"
+                class="img-thumbnail"
+                width="40px"
+              />
             </td>
+            <td>{{ produ.codigo }}</td>
+            <td>{{ produ.descripcion }}</td>
+            <td>{{ produ.categoria?.categoria?? "" }}</td>
+            <td>{{ produ.stock }}</td>
+            <td>{{ produ.precioCompra | currency }}</td>
+            <td>{{ produ.precioVenta | currency }}</td>
+            <!-- <td>{{ productos.subCategoria }}</td> -->
+            <!-- <td>{{ productos.productoAnterior }}</td> -->
+            <td>
+              <div class="btn-group">
+                <button
+                  class="btn btn-warning"
+                  data-toggle="modal"
+                  data-target="#modalAgregarProducto"
+                  (click)="editarProducto(produ.uid)"
+                >
+                  <i class="fa fa-pencil"></i>
+                </button>
 
+                <button class="btn btn-danger" (click)="delete(produ.uid)">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+            </td>
           </tr>
-
-          
-
-          
-
-
-
         </tbody>
-
       </table>
-
     </div>
-
   </div>
-
 </section>
-
-
 
 <!--=====================================
 MODAL AGREGAR PRODUCTO
 ======================================-->
 
 <div id="modalAgregarProducto" class="modal fade" role="dialog">
-
   <div class="modal-dialog">
-
     <div class="modal-content">
-
-      <form [formGroup]="validacionProductos"  #cuentaForm="ngForm">
-
+      <form [formGroup]="validacionProductos" #cuentaForm="ngForm">
         <!--=====================================
         CABEZA DEL MODAL
         ======================================-->
 
-        <div class="modal-header" style="background:#3c8dbc; color:white">
-
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="modal-header" style="background: #3c8dbc; color: white">
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
 
           <h4 class="modal-title">Agregar producto</h4>
-
         </div>
 
         <!--=====================================
@@ -130,221 +115,350 @@ MODAL AGREGAR PRODUCTO
         ======================================-->
 
         <div class="modal-body">
-
           <div class="box-body">
-
             <!-- ENTRADA PARA EL CÓDIGO -->
 
             <div class="form-group">
-
               <div class="input-group">
+                <span class="input-group-addon"
+                  ><i class="fa fa-code"></i
+                ></span>
 
-                <span class="input-group-addon"><i class="fa fa-code"></i></span>
-
-                <input type="text" class="form-control input-lg" formControlName="codigo"
-                  placeholder="Ingresar código">
-
+                <input
+                  type="text"
+                  class="form-control input-lg"
+                  formControlName="codigo"
+                  placeholder="Ingresar código"
+                />
               </div>
               <div
-                *ngIf="validacionProductos.controls['codigo'].invalid && (validacionProductos.controls['codigo'].dirty || validacionProductos.controls['codigo'].touched)"
-                class="form-text text-danger">
+                *ngIf="
+                  validacionProductos.controls['codigo'].invalid &&
+                  (validacionProductos.controls['codigo'].dirty ||
+                    validacionProductos.controls['codigo'].touched)
+                "
+                class="form-text text-danger"
+              >
                 <div *ngFor="let validation of user_validation_messages.codigo">
-                  <div style="font-size: smaller !important;"
-                    *ngIf="validacionProductos.get('codigo')?.hasError (validation.type) && (validacionProductos.get('codigo')?.dirty || validacionProductos.get('codigo')?.touched)">
-                    {{validation.message}}
+                  <div
+                    style="font-size: smaller !important"
+                    *ngIf="
+                      validacionProductos
+                        .get('codigo')
+                        ?.hasError(validation.type) &&
+                      (validacionProductos.get('codigo')?.dirty ||
+                        validacionProductos.get('codigo')?.touched)
+                    "
+                  >
+                    {{ validation.message }}
                   </div>
                 </div>
               </div>
-              <small *ngIf="codigoNoValido"
-                class="form-text text-danger animate__animated animate__heartBeat"></small>
-
+              <small
+                *ngIf="codigoNoValido"
+                class="form-text text-danger animate__animated animate__heartBeat"
+              ></small>
             </div>
 
             <!-- ENTRADA PARA LA DESCRIPCIÓN -->
 
             <div class="form-group">
-
               <div class="input-group">
+                <span class="input-group-addon"
+                  ><i class="fa fa-product-hunt"></i
+                ></span>
 
-                <span class="input-group-addon"><i class="fa fa-product-hunt"></i></span>
-
-                <input type="text" class="form-control input-lg" formControlName="descripcion"
-                  placeholder="Ingresar descripción">
-
+                <input
+                  type="text"
+                  class="form-control input-lg"
+                  formControlName="descripcion"
+                  placeholder="Ingresar descripción"
+                />
               </div>
               <div
-                *ngIf="validacionProductos.controls['descripcion'].invalid && (validacionProductos.controls['descripcion'].dirty || validacionProductos.controls['descripcion'].touched)"
-                class="form-text text-danger">
-                <div *ngFor="let validation of user_validation_messages.descripcion">
-                  <div style="font-size: smaller !important;"
-                    *ngIf="validacionProductos.get('descripcion')?.hasError (validation.type) && (validacionProductos.get('descripcion')?.dirty || validacionProductos.get('descripcion')?.touched)">
-                    {{validation.message}}
+                *ngIf="
+                  validacionProductos.controls['descripcion'].invalid &&
+                  (validacionProductos.controls['descripcion'].dirty ||
+                    validacionProductos.controls['descripcion'].touched)
+                "
+                class="form-text text-danger"
+              >
+                <div
+                  *ngFor="
+                    let validation of user_validation_messages.descripcion
+                  "
+                >
+                  <div
+                    style="font-size: smaller !important"
+                    *ngIf="
+                      validacionProductos
+                        .get('descripcion')
+                        ?.hasError(validation.type) &&
+                      (validacionProductos.get('descripcion')?.dirty ||
+                        validacionProductos.get('descripcion')?.touched)
+                    "
+                  >
+                    {{ validation.message }}
                   </div>
                 </div>
               </div>
-              <small *ngIf="descripcionNoValido"
-                class="form-text text-danger animate__animated animate__heartBeat"></small>
-
+              <small
+                *ngIf="descripcionNoValido"
+                class="form-text text-danger animate__animated animate__heartBeat"
+              ></small>
             </div>
 
             <!-- ENTRADA PARA SELECCIONAR CATEGORÍA -->
 
             <div class="form-group">
-
               <div class="input-group">
-
                 <span class="input-group-addon"><i class="fa fa-th"></i></span>
 
-                <select class="form-control input-lg" formControlName="categoria">
-
-                  <option [value]="categoria.uid" *ngFor="let categoria of categorias; index as i" >{{categoria.categoria}}</option>
-
+                <select
+                  class="form-control input-lg"
+                  formControlName="categoria"
+                >
+                  <option
+                    [value]="categoria.uid"
+                    *ngFor="let categoria of categorias; index as i"
+                  >
+                    {{ categoria.categoria }}
+                  </option>
                 </select>
-
               </div>
               <div
-                *ngIf="validacionProductos.controls['categoria'].invalid && (validacionProductos.controls['categoria'].dirty || validacionProductos.controls['categoria'].touched)"
-                class="form-text text-danger">
-                <div *ngFor="let validation of user_validation_messages.categoria">
-                  <div style="font-size: smaller !important;"
-                    *ngIf="validacionProductos.get('categoria')?.hasError (validation.type) && (validacionProductos.get('categoria')?.dirty || validacionProductos.get('categoria')?.touched)">
-                    {{validation.message}}
+                *ngIf="
+                  validacionProductos.controls['categoria'].invalid &&
+                  (validacionProductos.controls['categoria'].dirty ||
+                    validacionProductos.controls['categoria'].touched)
+                "
+                class="form-text text-danger"
+              >
+                <div
+                  *ngFor="let validation of user_validation_messages.categoria"
+                >
+                  <div
+                    style="font-size: smaller !important"
+                    *ngIf="
+                      validacionProductos
+                        .get('categoria')
+                        ?.hasError(validation.type) &&
+                      (validacionProductos.get('categoria')?.dirty ||
+                        validacionProductos.get('categoria')?.touched)
+                    "
+                  >
+                    {{ validation.message }}
                   </div>
                 </div>
               </div>
-              <small *ngIf="categoriaNoValido"
-                class="form-text text-danger animate__animated animate__heartBeat"></small>
-
+              <small
+                *ngIf="categoriaNoValido"
+                class="form-text text-danger animate__animated animate__heartBeat"
+              ></small>
             </div>
-
-
 
             <!-- ENTRADA PARA STOCK -->
 
             <div class="form-group">
-
               <div class="input-group">
+                <span class="input-group-addon"
+                  ><i class="fa fa-check"></i
+                ></span>
 
-                <span class="input-group-addon"><i class="fa fa-check"></i></span>
-
-                <input type="number" class="form-control input-lg" formControlName="stock" min="0"
-                  placeholder="Stock">
-
+                <input
+                  type="number"
+                  class="form-control input-lg"
+                  formControlName="stock"
+                  min="0"
+                  placeholder="Stock"
+                />
               </div>
               <div
-                *ngIf="validacionProductos.controls['stock'].invalid && (validacionProductos.controls['stock'].dirty || validacionProductos.controls['stock'].touched)"
-                class="form-text text-danger">
+                *ngIf="
+                  validacionProductos.controls['stock'].invalid &&
+                  (validacionProductos.controls['stock'].dirty ||
+                    validacionProductos.controls['stock'].touched)
+                "
+                class="form-text text-danger"
+              >
                 <div *ngFor="let validation of user_validation_messages.stock">
-                  <div style="font-size: smaller !important;"
-                    *ngIf="validacionProductos.get('stock')?.hasError (validation.type) && (validacionProductos.get('stock')?.dirty || validacionProductos.get('stock')?.touched)">
-                    {{validation.message}}
+                  <div
+                    style="font-size: smaller !important"
+                    *ngIf="
+                      validacionProductos
+                        .get('stock')
+                        ?.hasError(validation.type) &&
+                      (validacionProductos.get('stock')?.dirty ||
+                        validacionProductos.get('stock')?.touched)
+                    "
+                  >
+                    {{ validation.message }}
                   </div>
                 </div>
               </div>
-              <small *ngIf="stockNoValido"
-                class="form-text text-danger animate__animated animate__heartBeat"></small>
-
+              <small
+                *ngIf="stockNoValido"
+                class="form-text text-danger animate__animated animate__heartBeat"
+              ></small>
             </div>
 
             <!-- ENTRADA PARA PRECIO COMPRA -->
 
             <div class="form-group row">
-
               <div class="col-xs-6">
-
                 <div class="input-group">
+                  <span class="input-group-addon"
+                    ><i class="fa fa-arrow-up"></i
+                  ></span>
 
-                  <span class="input-group-addon"><i class="fa fa-arrow-up"></i></span>
-
-                  <input type="number" class="form-control input-lg" formControlName="precioCompra" min="0"
-                    placeholder="Precio de compra">
-
+                  <input
+                    type="number"
+                    class="form-control input-lg"
+                    formControlName="precioCompra"
+                    min="0"
+                    placeholder="Precio de compra"
+                  />
                 </div>
                 <div
-                  *ngIf="validacionProductos.controls['precioCompra'].invalid && (validacionProductos.controls['precioCompra'].dirty || validacionProductos.controls['precioCompra'].touched)"
-                  class="form-text text-danger">
-                  <div *ngFor="let validation of user_validation_messages.precioCompra">
-                    <div style="font-size: smaller !important;"
-                      *ngIf="validacionProductos.get('precioCompra')?.hasError (validation.type) && (validacionProductos.get('precioCompra')?.dirty || validacionProductos.get('precioCompra')?.touched)">
-                      {{validation.message}}
+                  *ngIf="
+                    validacionProductos.controls['precioCompra'].invalid &&
+                    (validacionProductos.controls['precioCompra'].dirty ||
+                      validacionProductos.controls['precioCompra'].touched)
+                  "
+                  class="form-text text-danger"
+                >
+                  <div
+                    *ngFor="
+                      let validation of user_validation_messages.precioCompra
+                    "
+                  >
+                    <div
+                      style="font-size: smaller !important"
+                      *ngIf="
+                        validacionProductos
+                          .get('precioCompra')
+                          ?.hasError(validation.type) &&
+                        (validacionProductos.get('precioCompra')?.dirty ||
+                          validacionProductos.get('precioCompra')?.touched)
+                      "
+                    >
+                      {{ validation.message }}
                     </div>
                   </div>
                 </div>
-                <small *ngIf="precioCompraNoValido"
-                  class="form-text text-danger animate__animated animate__heartBeat"></small>
-
+                <small
+                  *ngIf="precioCompraNoValido"
+                  class="form-text text-danger animate__animated animate__heartBeat"
+                ></small>
               </div>
 
               <!-- ENTRADA PARA PRECIO VENTA -->
 
               <div class="col-xs-6">
-
                 <div class="input-group">
+                  <span class="input-group-addon"
+                    ><i class="fa fa-arrow-down"></i
+                  ></span>
 
-                  <span class="input-group-addon"><i class="fa fa-arrow-down"></i></span>
-
-                  <input type="number" class="form-control input-lg" formControlName="precioVenta" min="0"
-                    placeholder="Precio de venta">
-
+                  <input
+                    type="number"
+                    class="form-control input-lg"
+                    formControlName="precioVenta"
+                    min="0"
+                    placeholder="Precio de venta"
+                  />
                 </div>
                 <div
-                  *ngIf="validacionProductos.controls['precioVenta'].invalid && (validacionProductos.controls['precioVenta'].dirty || validacionProductos.controls['precioVenta'].touched)"
-                  class="form-text text-danger">
-                  <div *ngFor="let validation of user_validation_messages.precioVenta">
-                    <div style="font-size: smaller !important;"
-                      *ngIf="validacionProductos.get('precioVenta')?.hasError (validation.type) && (validacionProductos.get('precioVenta')?.dirty || validacionProductos.get('precioVenta')?.touched)">
-                      {{validation.message}}
+                  *ngIf="
+                    validacionProductos.controls['precioVenta'].invalid &&
+                    (validacionProductos.controls['precioVenta'].dirty ||
+                      validacionProductos.controls['precioVenta'].touched)
+                  "
+                  class="form-text text-danger"
+                >
+                  <div
+                    *ngFor="
+                      let validation of user_validation_messages.precioVenta
+                    "
+                  >
+                    <div
+                      style="font-size: smaller !important"
+                      *ngIf="
+                        validacionProductos
+                          .get('precioVenta')
+                          ?.hasError(validation.type) &&
+                        (validacionProductos.get('precioVenta')?.dirty ||
+                          validacionProductos.get('precioVenta')?.touched)
+                      "
+                    >
+                      {{ validation.message }}
                     </div>
                   </div>
                 </div>
-                <small *ngIf="precioVentaNoValido"
-                  class="form-text text-danger animate__animated animate__heartBeat"></small>
+                <small
+                  *ngIf="precioVentaNoValido"
+                  class="form-text text-danger animate__animated animate__heartBeat"
+                ></small>
 
-                <br>
-
+                <br />
               </div>
-
 
               <!-- ENTRADA PARA SELECCIONAR SUB CATEGORÍA -->
 
               <div class="form-group">
-
                 <div class="input-group">
+                  <span class="input-group-addon"
+                    ><i class="fa fa-th"></i
+                  ></span>
 
-                  <span class="input-group-addon"><i class="fa fa-th"></i></span>
-
-                  <select class="form-control input-lg" formControlName="subCategoria">
-
-                    <option [value]="subcate.uid" *ngFor="let subcate of subCategorias; index as i">{{subcate.nombre}}</option>
+                  <select
+                    class="form-control input-lg"
+                    formControlName="subCategoria"
+                  >
+                    <option
+                      [value]="subcate.uid"
+                      *ngFor="let subcate of subCategorias; index as i"
+                    >
+                      {{ subcate.nombre }}
+                    </option>
                   </select>
-
                 </div>
-
               </div>
+
               <!-- ENTRADA PARA SELECCIONAR SUB CATEGORÍA -->
 
               <div class="col-xs-6">
-
                 <div class="input-group">
+                  <span class="input-group-addon"
+                    ><i class="fa fa-th"></i
+                  ></span>
 
-                  <span class="input-group-addon"><i class="fa fa-th"></i></span>
-
-                  <select class="form-control input-lg" formControlName="productoAnterior">
-
+                  <select
+                    class="form-control input-lg"
+                    formControlName="productoAnterior"
+                  >
                     <option value="">Producto Anterior</option>
-
-                    <option value="Taladros">Taladros</option>
-
-                    <option value="Andamios">Andamios</option>
-
-                    <option value="Equipos para construcción">Equipos para construcción</option>
-
+                    <option [value]="prod.uid" *ngFor="let prod of productos" >{{prod.descripcion}}</option>
                   </select>
-
                 </div>
-
               </div>
 
+
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon"
+                    ><i class="fa fa-th"></i
+                  ></span>
+
+                  <select
+                    class="form-control input-lg"
+                    formControlName="productoSiguiente"
+                  >
+                    <option value="">Producto Siguiente</option>
+                    <option [value]="prod.uid" *ngFor="let prod of productos" >{{prod.descripcion}}</option>
+                  </select>
+                </div>
+              </div>
 
 
             </div>
@@ -381,19 +495,15 @@ MODAL AGREGAR PRODUCTO
             <!-- ENTRADA PARA SUBIR FOTO -->
 
             <div class="form-group">
-
               <div class="panel">SUBIR IMAGEN</div>
 
-              <input type="file" id="nuevaImagen" formControlName="imagen">
+              <input type="file" id="nuevaImagen" (change)="onFileSelected($event)"  />
 
               <p class="help-block">Peso máximo de la imagen 2MB</p>
 
               <!-- <img src="./../../../assets/img/productos/default/anonymous.png" class="img-thumbnail" width="100px"> -->
-
             </div>
-
           </div>
-
         </div>
 
         <!--=====================================
@@ -401,18 +511,25 @@ MODAL AGREGAR PRODUCTO
         ======================================-->
 
         <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-default pull-left"
+            data-dismiss="modal"
+          >
+            Salir
+          </button>
 
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
-          <button type="submit" class="btn btn-primary" [disabled]="!cuentaForm.form.valid" (click)=" addProductos()"
-            data-dismiss="modal">{{productoExistente?'Actualizar Datos': 'Guardar producto'}}</button>
-
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!cuentaForm.form.valid"
+            (click)="addProductos()"
+            data-dismiss="modal"
+          >
+            {{ productoExistente ? "Actualizar Datos" : "Guardar producto" }}
+          </button>
         </div>
-
       </form>
-
     </div>
-
   </div>
-
 </div>

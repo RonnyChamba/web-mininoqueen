@@ -16,7 +16,7 @@ export class ProductosService implements OnInit {
   constructor(private afs: AngularFirestore) {}
 
   addProduct(productos: any): Promise<any> {
-    return this.afs.collection('productos').add(productos);
+    return this.afs.doc('productos/' + productos.uid).set(productos, {merge: true});
   }
 
   getProducto(): Observable<any> {
@@ -34,7 +34,7 @@ export class ProductosService implements OnInit {
     return this.afs.collection('productos').doc(id).delete();
   }
   
-  editarProductos(id: string):Observable<any>{
+  editarProductos(id: string){
     return this.afs.collection('productos').doc(id).snapshotChanges();
   }
 

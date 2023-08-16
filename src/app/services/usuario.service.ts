@@ -50,4 +50,9 @@ export class UsuarioService {
       foto: user.foto,
     });
   }
+
+  getUserById(uid: string) {
+    return this.afs.collection(COLLECTION_NAME).doc(uid).get();
+  }
+
 }
