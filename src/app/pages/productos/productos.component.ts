@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CategoriaService } from 'src/app/services/categoria.service';
 import { MensajesServiceService } from 'src/app/services/mensajes-service.service';
+import { TokenService } from 'src/app/services/token.service';
 import { UploadFileService } from 'src/app/services/upload-file.service';
 import { generaCadenaAleatoria } from 'src/app/util/dataUtil';
 import Swal from 'sweetalert2';
@@ -21,6 +22,8 @@ export class ProductosComponent implements OnInit {
   subCategorias: any[] = [];
   files: any;
 
+
+
   productEdit: any;
 
   constructor(
@@ -29,7 +32,8 @@ export class ProductosComponent implements OnInit {
     private toastr: ToastrService,
     private categoriaService: CategoriaService,
     private uploadFile: UploadFileService,
-    private messageServvice: MensajesServiceService
+    private messageServvice: MensajesServiceService,
+    private tokenService: TokenService
   ) {
     this.createForm();
   }
@@ -333,7 +337,9 @@ export class ProductosComponent implements OnInit {
   }
 
   getProduct() {
-    this.ProductosService.getProducto().subscribe((data) => {
+    const userCurrent = JSON.parse(localStorage.getItem('user') || '{}');
+
+    this.ProductosService.getProducto(userCurrent?.codigo).subscribe((data) => {
       this.productos = [];
       data.forEach((element: any) => {
         // console.log(element.payload.doc.id)

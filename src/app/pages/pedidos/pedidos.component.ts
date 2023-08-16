@@ -2,6 +2,7 @@ import { PedidosService } from './../../services/pedidos.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { TokenService } from 'src/app/services/token.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,19 +17,17 @@ pedidosExistente = true;
 constructor(
   private pedidosService: PedidosService,
   private toastr: ToastrService,
+  private tokenService: TokenService,
   private router: Router)
   {}
   ngOnInit(): void {
    this.getPedidos();
    
   }
-
-
-
-
-  
   getPedidos() {
-    this.pedidosService.getPedidos(false).subscribe((data) => {
+
+    const usuerCurrent= JSON.parse(this.tokenService.getToken() || '{}');
+    this.pedidosService.getPedidos(false, usuerCurrent.uid).subscribe((data) => {
       this.pedidos =[];
       data.forEach((element: any) => {
         this.pedidosExistente = true;
