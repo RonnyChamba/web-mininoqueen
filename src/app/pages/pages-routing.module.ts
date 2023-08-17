@@ -13,6 +13,8 @@ import { InicioComponent } from './inicio/inicio.component';
 import { ReporteDeVentasComponent } from './reporte-de-ventas/reporte-de-ventas.component';
 import { CrearVentaComponent } from './crear-venta/crear-venta.component';
 import { AdministrarVentasComponent } from './administrar-ventas/administrar-ventas.component';
+import { GuardAccessGuard } from '../guards/guard-access.guard';
+import { GuardLoginGuard } from '../guards/guard-login.guard';
 
 const routes: Routes = [
   {
@@ -20,16 +22,27 @@ const routes: Routes = [
     component: PagesComponent,
     children: [
       { path: '', component: DashboardComponent },
-      { path: 'usuario', component: UsuarioComponent },
-      { path: 'productos', component: ProductosComponent },
-      { path: 'categoria', component: CategoriaComponent },
-      { path: 'clientes', component: ClientesComponent },
-      { path: 'pedidos', component: PedidosComponent },
-      { path: 'inicio', component: InicioComponent },
-      { path: 'admin_ventas', component: AdministrarVentasComponent },
-      { path: 'reporte', component: ReporteDeVentasComponent },
-      { path: 'crear_venta', component: CrearVentaComponent },
-      { path: 'crear_venta/:idePedido', component: CrearVentaComponent },
+      { path: 'usuario', component: UsuarioComponent, 
+      canActivate: [GuardAccessGuard],
+      data: { expectedRol: ['admin'] } },
+      { path: 'productos', component: ProductosComponent, canActivate: [GuardAccessGuard],
+      data: { expectedRol: ['admin', 'user'] } },
+      { path: 'categoria', component: CategoriaComponent, canActivate: [GuardAccessGuard],
+      data: { expectedRol: ['admin', 'user'] } },
+      { path: 'clientes', component: ClientesComponent, canActivate: [GuardAccessGuard],
+      data: { expectedRol: ['admin', 'user'] } },
+      { path: 'pedidos', component: PedidosComponent, canActivate: [GuardAccessGuard],
+      data: { expectedRol: ['admin', 'user'] } },
+      { path: 'inicio', component: InicioComponent, canActivate: [GuardAccessGuard],
+      data: { expectedRol: ['admin', 'user'] } },
+      { path: 'admin_ventas', component: AdministrarVentasComponent, canActivate: [GuardAccessGuard],
+      data: { expectedRol: ['admin', 'user'] } },
+      { path: 'reporte', component: ReporteDeVentasComponent, canActivate: [GuardAccessGuard],
+      data: { expectedRol: ['admin', 'user'] } },
+      { path: 'crear_venta', component: CrearVentaComponent, canActivate: [GuardAccessGuard],
+      data: { expectedRol: ['admin', 'user'] } },
+      { path: 'crear_venta/:idePedido', component: CrearVentaComponent, canActivate: [GuardAccessGuard],
+      data: { expectedRol: ['admin', 'user'] } },
     ],
   },
 ];

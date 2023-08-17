@@ -35,7 +35,7 @@ export class SidebarComponent {
     this.loginService
       .logout()
       .then((respuesta) => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/auth']);
       })
       .catch((error) => console.log(error));
   }

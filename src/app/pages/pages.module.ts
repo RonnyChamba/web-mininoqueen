@@ -16,6 +16,7 @@ import { ReporteDeVentasComponent } from './reporte-de-ventas/reporte-de-ventas.
 import { UsuarioComponent } from './usuario/usuario.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CountUploadPlanification, FormatDatePipe, TrimText } from '../../app/util/format-date.pipe';
+import { PagesRoutingModule } from './pages-routing.module';
 
 
 
@@ -39,7 +40,8 @@ import { CountUploadPlanification, FormatDatePipe, TrimText } from '../../app/ut
     RouterModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PagesRoutingModule
   ],
   exports:[
     DashboardComponent,
