@@ -396,7 +396,10 @@ export class ProductosComponent implements OnInit {
   }
 
   getCategorias() {
-    this.categoriaService.getCategoria().subscribe((data) => {
+
+    const userCurrent = JSON.parse(localStorage.getItem('user') || '{}');
+
+    this.categoriaService.getCategoria(userCurrent?.codigo).subscribe((data) => {
       this.categorias = [];
 
       this.categorias.push({

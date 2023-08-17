@@ -5,6 +5,7 @@ import { Toast, ToastrService } from 'ngx-toastr';
 import { catchError, of, tap } from 'rxjs';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { ProductosService } from 'src/app/services/productos.service';
+import { TokenService } from 'src/app/services/token.service';
 import { VentasService } from 'src/app/services/ventas.service';
 import { generaCadenaAleatoria } from 'src/app/util/dataUtil';
 
@@ -52,7 +53,8 @@ export class CrearVentaComponent implements OnInit {
     private productoService: ProductosService,
     private ventaService: VentasService,
     private toaster: ToastrService,
-    private router: Router
+    private router: Router,
+    private tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
@@ -321,7 +323,9 @@ export class CrearVentaComponent implements OnInit {
   }
 
   getProductos() {
-    this.productoService.getProductosByUser().subscribe((resp) => {
+
+    const userCurrent = JSON.parse(this.tokenService.getToken() || '{}');
+    this.productoService.getProductosByUser(userCurrent?.codigo).subscribe((resp) => {
       // console.log(resp);
 
       this.productoTabla = [];

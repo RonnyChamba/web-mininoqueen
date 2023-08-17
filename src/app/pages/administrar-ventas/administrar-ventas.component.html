@@ -1,106 +1,74 @@
+<section class="content-header">
+  <h1>Administrar ventas</h1>
 
+  <ol class="breadcrumb">
+    <li>
+      <a [routerLink]="['/dashboard/inicio']"
+        ><i class="fa fa-dashboard"></i> Inicio</a
+      >
+    </li>
 
-    <section class="content-header">
-      
-      <h1>
+    <li class="active">Administrar ventas</li>
+  </ol>
+</section>
+
+<section class="content">
+  <div class="box">
+    <div class="box-header with-border">
+      <a [routerLink]="['/dashboard/pedidos']">
+        <button class="btn btn-primary">Ver Pedidos</button>
+      </a>
+    </div>
+
+    <div class="box-body">
+      <table class="table table-bordered table-striped dt-responsive tablas">
+        <thead>
+          <tr>
+            <th style="width: 10px">#</th>
+            <th>Fecha</th>
+            <th>Código factura</th>
+            <th>Código Pedido</th>
+            <th>Cliente</th>
+            <th *ngIf="isAdmin">Vendedor</th>
+            <th>Forma de pago</th>
+            <th># Productos</th>
+            <th>Neto</th>
+            <th>Total</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let vent of venta; index as i">
+            <td>{{ i + 1 }}</td>
+
+            <td>{{ vent.fecha | formatDate }}</td>
+            <td>{{ vent.codigoTransaccion }}</td>
+            <td>{{ vent.codigo }}</td>
+            <td>{{ vent.idCliente?.nombre }}</td>
+            <td *ngIf="isAdmin">{{ vent.idVendedor?.nombre }}</td>
+            <td>{{ vent?.metodoPago }}</td>
+            <td>{{ vent?.producto?.length }}</td>
+            <td>{{ vent.neto }}</td>
+            <td>{{ vent?.total }}</td>
+            <td>
+              <div class="btn-group">
+                <!-- <button class="btn btn-info">
+                  <i class="fa fa-print"></i>
+                </button> -->
+
+                <button class="btn btn-danger" (click)="deleteVenta(vent.id)">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info">
         
-        Administrar ventas
-      
-      </h1>
-  
-      <ol class="breadcrumb">
-        
-        <li><a [routerLink]="['/dashboard/inicio' ]"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        
-        <li class="active">Administrar ventas</li>
-      
-      </ol>
-  
-    </section>
-  
-    <section class="content">
-  
-      <div class="box">
-  
-        <div class="box-header with-border">
-    
-          <a [routerLink]="['/dashboard/crear_venta' ]">
-  
-            <button class="btn btn-primary">
-              
-              Agregar venta
-  
-            </button>
-  
-          </a>
-  
-        </div>
-  
-        <div class="box-body">
-          
-         <table class="table table-bordered table-striped dt-responsive tablas">
-           
-          <thead>
-           
-           <tr>
-             
-             <th style="width:10px">#</th>
-             <th>Código factura</th>
-             <th>Cliente</th>
-             <th>Vendedor</th>
-             <th>Forma de pago</th>
-             <th>Neto</th>
-             <th>Total</th> 
-             <th>Fecha</th>
-             <th>Acciones</th>
-  
-           </tr> 
-  
-          </thead>
-  
-          <tbody>
-            
-            <tr *ngFor="let vent of venta">
-  
-              <td>1</td>
-  
-              <td>{{vent.codigo}}</td>
-  
-              <td>{{vent.idCLiente}}</td>
-  
-              <td>{{vent.idVendedor}}</td>
-  
-              <td>{{vent.impuesto}}</td>
-  
-              <td>{{vent.neto}}</td>
-  
-              <td>{{vent.producto}}</td>
-  
-              <td>{{vent.total}}</td>
-  
-              <td>
-  
-                <div class="btn-group">
-                    
-                  <button class="btn btn-info"><i class="fa fa-print"></i></button>
-  
-                  <button class="btn btn-danger" (click)="deleteVenta(vent.id)"><i class="fa fa-times"></i></button>
-  
-                </div>  
-  
-              </td>
-  
-            </tr>
-            
-          </tbody>
-  
-         </table>
-  
-        </div>
-  
+        <strong>Info!</strong> No hay ventas registradas.
       </div>
-  
-    </section>
-  
-
-  
+    </div>
+  </div>
+</section>

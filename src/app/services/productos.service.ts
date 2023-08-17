@@ -30,7 +30,9 @@ export class ProductosService implements OnInit {
   }
 
   getProducto(codigoIntermedio: any): Observable<any> {
+    console.log('codigoIntermedio', codigoIntermedio);
     if (this.isAdmin) {
+      console.log('es admin');
       return this.afs
         .collection('productos')
         .snapshotChanges()
@@ -40,6 +42,7 @@ export class ProductosService implements OnInit {
           })
         );
     } else {
+      console.log('no es admin');
       return this.afs
         .collection('productos', (ref) =>
           ref.where('intermediario', '==', codigoIntermedio)
@@ -68,7 +71,8 @@ export class ProductosService implements OnInit {
    */
   getProductosByUser(codeIntermediario?: any): Observable<any> {
     return this.afs
-      .collection('productos')
+      .collection('productos',
+      (ref) => ref.where('intermediario', '==', codeIntermediario))
       .snapshotChanges()
       .pipe(
         tap(() => {
