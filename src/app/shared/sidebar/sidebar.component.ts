@@ -14,6 +14,8 @@ export class SidebarComponent {
 
   typeUser: string = '';
   isAdmin: boolean = false;
+  foto="./../../../assets/img/usuarios/default/anonymous.png";
+  usuario ="";
 
   constructor(
     private loginService: LoginService,
@@ -23,6 +25,10 @@ export class SidebarComponent {
       const usuerCurrent= JSON.parse(this.tokenService.getToken() || '{}');
       this.typeUser = usuerCurrent.perfil;
       this.isAdmin = this.tokenService.isLoggedAdmin();
+      this.usuario = usuerCurrent.usuario;
+      if (usuerCurrent.foto) {
+        this.foto = usuerCurrent.foto;
+      }
      }
 
   logout() {

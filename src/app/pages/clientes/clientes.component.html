@@ -37,9 +37,9 @@
      >
 
         <thead>
-
           <tr>
             <th style="width:10px">#</th>
+            <th>Fecha</th>
             <th>Nombre</th>
             <th>Documento ID</th>
             <th>Email</th>
@@ -47,8 +47,8 @@
             <th>Dirección</th>
             <th>Fecha nacimiento</th>
             <th>Total compras</th>
-            <th>Última compra</th>
-            <th>Ingreso al sistema</th>
+            <!-- <th>Última compra</th> -->
+            <!-- <th>Ingreso al sistema</th> -->
             <th>Acciones</th>
 
           </tr>
@@ -57,8 +57,9 @@
 
         <tbody>
 
-          <tr  *ngFor="let client of clientes">
-            <td>1</td>
+          <tr *ngFor="let client of clientes; index as i">
+            <td>{{i+1}}</td>
+            <td>{{client.fecha| formatDate}}</td>
             <td>{{client.nombre}}</td>
             <td>{{client.documento}} </td>
             <td>{{client.email}} </td>
@@ -66,8 +67,8 @@
             <td>{{client.direccion}}</td>
             <td>{{client.fechaNacimiento}}</td>
             <td></td>
-            <td></td>
-            <td></td>
+            <!-- <td></td> -->
+            <!-- <td></td> -->
 
 
             
@@ -276,7 +277,7 @@
 
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
-                <input type="text" class="form-control input-lg" formControlName="fechaNacimiento"
+                <input type="date" class="form-control input-lg" formControlName="fechaNacimiento"
                   placeholder="Ingresar fecha nacimiento" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask>
 
               </div>

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { user } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CategoriaService } from 'src/app/services/categoria.service';
+import { TokenService } from 'src/app/services/token.service';
 import { generaCadenaAleatoria } from 'src/app/util/dataUtil';
 import Swal from 'sweetalert2';
 
@@ -19,7 +21,8 @@ export class CategoriaComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private CategoriaService: CategoriaService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private tokenService: TokenService
   ) {
     this.validacionCategoria = this.fb.group({
       categoria: ['', [Validators.required]],
@@ -66,12 +69,15 @@ export class CategoriaComponent implements OnInit {
 
     const uid = generaCadenaAleatoria(10);
 
+    const userCurrent = JSON.parse(this.tokenService.getToken() || '{}');
     const validacionCategoria: any = {
       categoria: this.validacionCategoria.value.categoria,
       subcategorias: [],
       uid,
       fecha: new Date(),
       productos: [],
+      intermediario: userCurrent.codigo,
+      
     };
 
     console.log(validacionCategoria);
@@ -92,7 +98,12 @@ export class CategoriaComponent implements OnInit {
   }
 
   getCategoria() {
-    this.CategoriaService.getCategoria().subscribe((data) => {
+
+
+    const userCurrent = JSON.parse(this.tokenService.getToken() || '{}');
+
+
+    this.CategoriaService.getCategoria(userCurrent.codigo).subscribe((data) => {
       this.categoria = [];
       data.forEach((element: any) => {
         // console.log(element.payload.doc.id)

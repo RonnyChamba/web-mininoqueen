@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,10 @@ export class CategoriaService {
     return this.refresh;
   }
 
-  constructor(private afs: AngularFirestore) {}
+  constructor(
+    private afs: AngularFirestore,
+    private tokenService: TokenService
+  ) {}
 
   addCategoria(categorias: any, uid?: any): Promise<any> {
     console.log(categorias);
@@ -29,15 +33,29 @@ export class CategoriaService {
     return this.afs.doc(`categorias/${uid}`).set(data, { merge: true });
   }
 
-  getCategoria(): Observable<any> {
-    return this.afs
-      .collection('categorias', (ref) => ref.orderBy('fecha', 'desc'))
+  getCategoria(codeIntemediario?: string): Observable<any> {
+    if (this.tokenService.isLoggedAdmin()) {
+      return this.afs
+        .collection('categorias', (ref) => ref.orderBy('fecha', 'desc'))
+        .snapshotChanges()
+        .pipe(
+          tap(() => {
+            this.refresh.next();
+          })
+        );
+    }else {
+
+      return this.afs
+      .collection('categorias', 
+      (ref) =>  ref.where('intermediario', '==', codeIntemediario)
+      .orderBy('fecha', 'desc'))
       .snapshotChanges()
       .pipe(
         tap(() => {
           this.refresh.next();
         })
       );
+    }
   }
 
   deleteCategoria(id: string): Promise<any> {

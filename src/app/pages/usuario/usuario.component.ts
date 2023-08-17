@@ -12,6 +12,7 @@ import { timestamp } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UploadFileService } from 'src/app/services/upload-file.service';
 import { MensajesServiceService } from 'src/app/services/mensajes-service.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-usuario',
@@ -34,7 +35,8 @@ export class UsuarioComponent implements OnInit {
     private loginService: LoginService,
     private toastr: ToastrService,
     private uploadFile: UploadFileService,
-    private messageServvice: MensajesServiceService
+    private messageServvice: MensajesServiceService,
+    private tokenService: TokenService
   ) {
     this.validacionUsuario = this.fb.group({
       nombre: ['', Validators.required],
@@ -211,10 +213,16 @@ export class UsuarioComponent implements OnInit {
       data.forEach((element: any) => {
         // this.userExistente = true;
 
-        this.usuarios.push({
-          id: element.payload.doc.id,
-          ...element.payload.doc.data(),
-        });
+        const data = element.payload.doc.data();
+        data.id = element.payload.doc.id;
+
+        const userCurrent = JSON.parse(this.tokenService.getToken() || '{}');
+        if (data.uid != userCurrent.uid) {
+          this.usuarios.push({
+            id: element.payload.doc.id,
+            ...element.payload.doc.data(),
+          });
+        }
 
         // console.log(this.usuarios);
       });

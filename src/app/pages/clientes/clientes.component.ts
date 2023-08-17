@@ -2,6 +2,8 @@ import { ClientesService } from './../../services/clientes.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { LoginService } from 'src/app/services/login.service';
+import { TokenService } from 'src/app/services/token.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,7 +18,9 @@ export class ClientesComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private clientesService: ClientesService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private tokenService: TokenService,
+    private loginService: LoginService
   ) {
     this.validacionClientes = this.fb.group({
       nombre: ['', [Validators.required]],
@@ -155,29 +159,51 @@ export class ClientesComponent implements OnInit {
     );
   }
 
-  addClient() {
-    const validacionClientes: any = {
-      nombre: this.validacionClientes.value.nombre,
-      documento: this.validacionClientes.value.documento,
-      email: this.validacionClientes.value.email,
-      telefono: this.validacionClientes.value.telefono,
-      fechaNacimiento: this.validacionClientes.value.fechaNacimiento,
-      direccion: this.validacionClientes.value.direccion,
-    };
-    this.clientesService
-      .addClient(validacionClientes)
-      .then(() =>
+  async addClient() {
+    try {
+      const userCurrent = JSON.parse(this.tokenService.getToken() || '{}');
+
+      const validacionClientes: any = {
+        nombre: this.validacionClientes.value.nombre,
+        fecha: new Date(),
+        documento: this.validacionClientes.value.documento,
+        email: this.validacionClientes.value.email,
+        telefono: this.validacionClientes.value.telefono,
+        intermediario: userCurrent?.codigo,
+        fechaNacimiento: this.validacionClientes.value.fechaNacimiento,
+        direccion: this.validacionClientes.value.direccion,
+      };
+
+      // save clinte as user
+
+      const result = await this.loginService.register({
+        email: `${validacionClientes.documento}@gmail.com`,
+        password: '123456',
+      });
+
+      if (result) {
+        validacionClientes.uid = result.user?.uid;
+
+        const resp = await this.clientesService.addClientWithUid(validacionClientes);
+
         this.toastr.success(
           'Cliente Registrado',
           'El cliente fue registrado con exito!',
           { positionClass: 'toast-bottom-right' }
-        )
-      )
-      .catch((error) => console.log(error));
+        );
+      }
+    } catch (error) {
+      this.toastr.error(
+        'Error al registrar cliente',
+        '',
+        { positionClass: 'toast-bottom-right' }
+      );
+    }
   }
 
   getClient() {
-    this.clientesService.getClient().subscribe((data) => {
+    const userCurrent = JSON.parse(this.tokenService.getToken() || '{}');
+    this.clientesService.getClient(userCurrent?.codigo).subscribe((data) => {
       this.clientes = [];
       data.forEach((element: any) => {
         this.clienteExistente = true;
@@ -191,32 +217,32 @@ export class ClientesComponent implements OnInit {
     });
   }
 
-  
-  deleteClient(id: string){
-   
-    let  categoria = this.clientes.find(item => item.id == id);
+  deleteClient(id: string) {
+    let categoria = this.clientes.find((item) => item.id == id);
     Swal.fire({
       title: 'Esta seguro?',
-      text:  `¿Esta seguro de eliminar la categoria ${categoria? categoria.categoria: ''}?`,
+      text: `¿Esta seguro de eliminar la categoria ${
+        categoria ? categoria.categoria : ''
+      }?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Si,Eliminar',
-      cancelButtonText: 'No, cancelar'
+      cancelButtonText: 'No, cancelar',
     }).then((result) => {
-    if (result.isConfirmed) {
-    this.clientesService.deleteClient(id)
-      
-        Swal.fire( 'Categoria eliminada',
-        'La categoria ha sido eliminado con exito',
-        'success');
+      if (result.isConfirmed) {
+        this.clientesService.deleteClient(id);
+
+        Swal.fire(
+          'Categoria eliminada',
+          'La categoria ha sido eliminado con exito',
+          'success'
+        );
       }
     });
   }
 
-  
-  
   editarCliente(id: string) {
     this.clientesService.editarCliente(id).subscribe(
       (data) => {
