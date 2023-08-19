@@ -20,7 +20,7 @@ export class UsuarioService {
 
   getUser(): Observable<any> {
     return this.afs
-      .collection('usuarios', (ref) => ref.orderBy('fecha', 'asc'))
+      .collection('usuarios', (ref) => ref.orderBy('fecha', 'desc'))
       .snapshotChanges()
       .pipe(
         tap(() => {

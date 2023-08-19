@@ -46,6 +46,7 @@
 
 						<img [src]="foto" class="user-image">
 						<span class="hidden-xs">{{typeUser}}</span>
+						<!-- <span class="hidden-xs">{{codigo}}</span> -->
 					</a>
 
 					<!-- Dropdown-toggle -->
@@ -59,7 +60,8 @@
 
 								<div class="pull-left">
 	
-									<span>{{usuario}}</span>
+									<!-- <span>{{usuario}}</span> --> 
+									<span class="hidden-xs">{{codigo}}</span>
 	
 								</div>
 	
@@ -108,7 +110,7 @@
 				</a>
 
 			</li>
-			<li>
+			<li *ngIf="isAdmin">
 
 				<a [routerLink]="['/dashboard/categoria' ]">
 

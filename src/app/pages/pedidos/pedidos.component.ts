@@ -50,7 +50,7 @@ constructor(
     let  pedidos = this.pedidos.find(item => item.id == id);
     Swal.fire({
       title: 'Esta seguro?',
-      text:  `¿Esta seguro de eliminar el usuario ${pedidos? pedidos.nombre: ''}?`,
+      text:  `¿Esta seguro de eliminar el pedido ${pedidos? pedidos.nombre: ''}?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -61,8 +61,8 @@ constructor(
     if (result.isConfirmed) {
     this.pedidosService.deletePedidos(id)
       
-        Swal.fire( 'Usuario eliminada',
-        'El usuario ha sido eliminado con exito',
+        Swal.fire( 'Pedido eliminado',
+        'El pedido ha sido eliminado con exito',
         'success');
       }
     });

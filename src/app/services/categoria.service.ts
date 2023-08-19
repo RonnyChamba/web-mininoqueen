@@ -34,7 +34,12 @@ export class CategoriaService {
   }
 
   getCategoria(codeIntemediario?: string): Observable<any> {
-    if (this.tokenService.isLoggedAdmin()) {
+
+    /**
+     * solo los admin pueder ver las categorias de todos los intermediarios
+     */
+
+    // if (this.tokenService.isLoggedAdmin()) {
       return this.afs
         .collection('categorias', (ref) => ref.orderBy('fecha', 'desc'))
         .snapshotChanges()
@@ -43,19 +48,20 @@ export class CategoriaService {
             this.refresh.next();
           })
         );
-    }else {
 
-      return this.afs
-      .collection('categorias', 
-      (ref) =>  ref.where('intermediario', '==', codeIntemediario)
-      .orderBy('fecha', 'desc'))
-      .snapshotChanges()
-      .pipe(
-        tap(() => {
-          this.refresh.next();
-        })
-      );
-    }
+    // }else {
+
+    //   return this.afs
+    //   .collection('categorias', 
+    //   (ref) =>  ref.where('intermediario', '==', codeIntemediario)
+    //   .orderBy('fecha', 'desc'))
+    //   .snapshotChanges()
+    //   .pipe(
+    //     tap(() => {
+    //       this.refresh.next();
+    //     })
+    //   );
+    // }
   }
 
   deleteCategoria(id: string): Promise<any> {
@@ -89,7 +95,7 @@ export class CategoriaService {
         // items.push(newItem);
 
         // Actualizar la categoría
-        transaction.update(categoriaRef.ref, { categoria: data.categoria });
+        transaction.update(categoriaRef.ref, { categoria: data.categoria, imagen: data.imagen });
 
         // Actulizar en productos la categoria
 

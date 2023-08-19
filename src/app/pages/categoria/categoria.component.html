@@ -36,6 +36,7 @@
         <thead>
           <tr>
             <th style="width: 10px">#</th>
+            <th>Foto</th>
             <th>Fecha</th>
             <th>Categoria</th>
             <!-- <th># Productos</th> -->
@@ -46,6 +47,18 @@
         <tbody>
           <tr *ngFor="let catego of categoria; index as i">
             <td>{{i+1}}</td>
+            <td>
+              <!-- ./../../../assets/img/productos/default/anonymous.png -->
+              <img
+                [src]="
+                  catego.imagen
+                    ? catego.imagen
+                    : './../../../assets/img/productos/default/anonymous.png'
+                "
+                class="img-thumbnail"
+                width="40px"
+              />
+            </td>
 
             <td>{{ catego?.fecha | formatDate }}</td>
             <td>{{ catego.categoria }}</td>
@@ -152,6 +165,20 @@
                 <button type="submit" class="btn btn-primary">Guardar</button>
               </div>
             </div> -->
+          </div>
+
+          <div class="form-group">
+            <div class="panel">SUBIR IMAGEN</div>
+
+            <input
+              type="file"
+              id="nuevaImagen"
+              (change)="onFileSelected($event)"
+            />
+
+            <p class="help-block">Peso máximo de la imagen 2MB</p>
+
+            <!-- <img src="./../../../assets/img/productos/default/anonymous.png" class="img-thumbnail" width="100px"> -->
           </div>
           <div class="box-body">
             <!-- ENTRADA PARA EL SUB CATEOGIRIA-->

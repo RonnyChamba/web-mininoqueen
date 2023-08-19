@@ -16,6 +16,7 @@ export class SidebarComponent {
   isAdmin: boolean = false;
   foto="./../../../assets/img/usuarios/default/anonymous.png";
   usuario ="";
+  codigo ="";
 
   constructor(
     private loginService: LoginService,
@@ -26,6 +27,7 @@ export class SidebarComponent {
       this.typeUser = usuerCurrent.perfil;
       this.isAdmin = this.tokenService.isLoggedAdmin();
       this.usuario = usuerCurrent.usuario;
+      this.codigo = usuerCurrent.codigo;
       if (usuerCurrent.foto) {
         this.foto = usuerCurrent.foto;
       }

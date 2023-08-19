@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CategoriaService } from 'src/app/services/categoria.service';
 import { TokenService } from 'src/app/services/token.service';
+import { UploadFileService } from 'src/app/services/upload-file.service';
 import { generaCadenaAleatoria } from 'src/app/util/dataUtil';
 import Swal from 'sweetalert2';
 
@@ -16,14 +17,18 @@ export class CategoriaComponent implements OnInit {
   validacionCategoria: FormGroup;
   categoria: any[] = [];
   categoriaExistente: boolean = false;
+  files: any;
+
 
   categotyCurrent: any;
   constructor(
     private fb: FormBuilder,
     private CategoriaService: CategoriaService,
     private toastr: ToastrService,
+    private uploadFile: UploadFileService,
     private tokenService: TokenService
   ) {
+
     this.validacionCategoria = this.fb.group({
       categoria: ['', [Validators.required]],
       subcategoria: [[], []],
@@ -67,6 +72,21 @@ export class CategoriaComponent implements OnInit {
       return;
     }
 
+    let imagen = '';
+
+    try {
+      if (this.files) {
+        const resources = await this.uploadFile.uploadFile(this.files);
+        // this. = resources.url;
+        imagen = resources.url;
+        console.log(resources);
+      }
+
+    } catch (error) {
+      console.log('Error al carga imagen del categoria', error);
+
+      imagen = '';
+    }
     const uid = generaCadenaAleatoria(10);
 
     const userCurrent = JSON.parse(this.tokenService.getToken() || '{}');
@@ -77,6 +97,7 @@ export class CategoriaComponent implements OnInit {
       fecha: new Date(),
       productos: [],
       intermediario: userCurrent.codigo,
+      imagen
       
     };
 
@@ -166,10 +187,35 @@ export class CategoriaComponent implements OnInit {
     try {
       console.log(this.categotyCurrent);
 
+      
+
+      let imagen = '';
+    try {
+      if (this.files) {
+        const resources = await this.uploadFile.uploadFile(this.files);
+        // this. = resources.url;
+        imagen = resources.url;
+        console.log(resources);
+      }else {
+        imagen = this.categotyCurrent.imagen;
+      }
+
+    } catch (error) {
+      console.log('Error al carga imagen del categoria', error);
+
+      imagen = '';
+    }
+
+
+
+
       const data = {
         categoria: this.validacionCategoria.value.categoria,
+        imagen
       };
 
+      console.log(data);
+      // return;
       let isSuccess = await this.CategoriaService.updateCategoria(
         this.categotyCurrent.uid,
         data
@@ -191,4 +237,16 @@ export class CategoriaComponent implements OnInit {
       this.toastr.error('Error al actualizar ', '');
     }
   }
+
+    // función para seleccionar un archivo
+    onFileSelected(event: any) {
+      const file = event.target.files[0];
+  
+      console.log(file);
+      if (file && file.size > 0) {
+        this.files = file;
+      } else {
+        this.files = null;
+      }
+    }
 }

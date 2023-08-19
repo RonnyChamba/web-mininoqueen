@@ -19,7 +19,8 @@
         class="btn btn-primary"
         data-toggle="modal"
         data-target="#modalAgregarProducto"
-      (click)="newProducto()"  >
+        (click)="newProducto()"
+      >
         Agregar producto
       </button>
     </div>
@@ -50,18 +51,22 @@
 
         <tbody>
           <tr *ngFor="let produ of productos; index as i">
-            <td>{{i+1}}</td>
+            <td>{{ i + 1 }}</td>
             <td>
               <!-- ./../../../assets/img/productos/default/anonymous.png -->
               <img
-                [src]="produ.imagen? produ.imagen : './../../../assets/img/productos/default/anonymous.png'"
+                [src]="
+                  produ.imagen
+                    ? produ.imagen
+                    : './../../../assets/img/productos/default/anonymous.png'
+                "
                 class="img-thumbnail"
                 width="40px"
               />
             </td>
             <td>{{ produ.codigo }}</td>
             <td>{{ produ.descripcion }}</td>
-            <td>{{ produ.categoria?.categoria?? "" }}</td>
+            <td>{{ produ.categoria?.categoria ?? "" }}</td>
             <td>{{ produ.stock }}</td>
             <td>{{ produ.precioCompra | currency }}</td>
             <td>{{ produ.precioVenta | currency }}</td>
@@ -172,7 +177,7 @@ MODAL AGREGAR PRODUCTO
                   type="text"
                   class="form-control input-lg"
                   formControlName="descripcion"
-                  placeholder="Ingresar descripción"
+                  placeholder="Ingresar nombre"
                 />
               </div>
               <div
@@ -208,9 +213,40 @@ MODAL AGREGAR PRODUCTO
               ></small>
             </div>
 
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"
+                  ><i class="fa fa-product-hunt"></i
+                ></span>
+
+                <!-- <input
+                  type="text"
+                  class="form-control input-lg"
+                  formControlName="detalles"
+                  placeholder="Ingresar descripción"
+                /> -->
+
+                <textarea
+                  class="form-control input-lg"
+                  formControlName="detalles"
+                  placeholder="Ingresar descripción"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div
+                *ngIf="
+                  validacionProductos.controls['detalles'].invalid &&
+                  (validacionProductos.controls['detalles'].dirty ||
+                    validacionProductos.controls['detalles'].touched)
+                "
+                class="form-text text-danger"
+              ></div>
+    
+            </div>
+
             <!-- ENTRADA PARA SELECCIONAR CATEGORÍA -->
 
-            <div class="form-group">
+            <div class="form-group" *ngIf="isAdmin">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-th"></i></span>
 
@@ -405,7 +441,7 @@ MODAL AGREGAR PRODUCTO
 
               <!-- ENTRADA PARA SELECCIONAR SUB CATEGORÍA -->
 
-              <div class="form-group">
+              <div class="form-group" *ngIf="isAdmin">
                 <div class="input-group">
                   <span class="input-group-addon"
                     ><i class="fa fa-th"></i
@@ -427,7 +463,7 @@ MODAL AGREGAR PRODUCTO
 
               <!-- ENTRADA PARA SELECCIONAR SUB CATEGORÍA -->
 
-              <div class="col-xs-6">
+              <div class="col-xs-6"  *ngIf="isAdmin">
                 <div class="input-group">
                   <span class="input-group-addon"
                     ><i class="fa fa-th"></i
@@ -438,13 +474,21 @@ MODAL AGREGAR PRODUCTO
                     formControlName="productoAnterior"
                   >
                     <option value="">Producto Anterior</option>
-                    <option [value]="prod.uid" *ngFor="let prod of productos" >{{prod.descripcion}}</option>
+                    <option [value]="prod.uid" *ngFor="let prod of productos">
+                      {{ prod.descripcion }}
+                    </option>
                   </select>
+
+                  <textarea
+                  class="form-control input-lg"
+                  formControlName="detallesAnterior"
+                  placeholder="Ingresar descripción"
+                  rows="3"
+                ></textarea>
                 </div>
               </div>
 
-
-              <div class="col-xs-6">
+              <div class="col-xs-6" *ngIf="isAdmin">
                 <div class="input-group">
                   <span class="input-group-addon"
                     ><i class="fa fa-th"></i
@@ -455,12 +499,19 @@ MODAL AGREGAR PRODUCTO
                     formControlName="productoSiguiente"
                   >
                     <option value="">Producto Siguiente</option>
-                    <option [value]="prod.uid" *ngFor="let prod of productos" >{{prod.descripcion}}</option>
+                    <option [value]="prod.uid" *ngFor="let prod of productos">
+                      {{ prod.descripcion }}
+                    </option>
                   </select>
+                  
+                  <textarea
+                  class="form-control input-lg"
+                  formControlName="detallesSiguiente"
+                  placeholder="Ingresar descripción"
+                  rows="3"
+                ></textarea>
                 </div>
               </div>
-
-
             </div>
             <!-- CHECKBOX PARA PORCENTAJE -->
 
@@ -497,7 +548,11 @@ MODAL AGREGAR PRODUCTO
             <div class="form-group">
               <div class="panel">SUBIR IMAGEN</div>
 
-              <input type="file" id="nuevaImagen" (change)="onFileSelected($event)"  />
+              <input
+                type="file"
+                id="nuevaImagen"
+                (change)="onFileSelected($event)"
+              />
 
               <p class="help-block">Peso máximo de la imagen 2MB</p>
 

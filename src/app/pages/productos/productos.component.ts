@@ -22,9 +22,8 @@ export class ProductosComponent implements OnInit {
   subCategorias: any[] = [];
   files: any;
 
-
-
   productEdit: any;
+  isAdmin = false;
 
   constructor(
     private fb: FormBuilder,
@@ -35,18 +34,30 @@ export class ProductosComponent implements OnInit {
     private messageServvice: MensajesServiceService,
     private tokenService: TokenService
   ) {
+    this.isAdmin = this.tokenService.isLoggedAdmin();
+
     this.createForm();
   }
   ngOnInit(): void {
     this.onChangeValues();
     this.getProduct();
     this.getCategorias();
+    this.clearOrSetValidator();
+  }
+
+  clearOrSetValidator() {
+    if (!this.isAdmin) {
+      this.validacionProductos
+        .get('categoria')
+        ?.removeValidators([Validators.required]);
+    }
   }
 
   createForm() {
     this.validacionProductos = this.fb.group({
       codigo: ['', [Validators.required]],
       descripcion: ['', [Validators.required]],
+      detalles: [''],
       categoria: ['', [Validators.required]],
       stock: ['', [Validators.required]],
       precioCompra: ['', [Validators.required]],
@@ -54,7 +65,9 @@ export class ProductosComponent implements OnInit {
       imagen: [''],
       subCategoria: [''],
       productoAnterior: [''],
+      detallesAnterior: [''],
       productoSiguiente: [''],
+      detallesSiguiente: [''],
       porcentaje: [''],
     });
   }
@@ -216,26 +229,33 @@ export class ProductosComponent implements OnInit {
 
   newProducto() {
     this.productoExistente = false;
-    this.validacionProductos.patchValue({
-      codigo: '',
-      descripcion: '',
-      categoria: '',
-      stock: '',
-      precioCompra: '',
-      precioVenta: '',
-      imagen: '',
-      subCategoria: '',
-      productoAnterior: '',
-      productoSiguiente: '',
-      porcentaje: '',
-
-    }, { emitEvent: false });
-
-
+    this.validacionProductos.get('codigo')?.enable();
+    this.validacionProductos.patchValue(
+      {
+        codigo: '',
+        descripcion: '',
+        categoria: '',
+        stock: '',
+        precioCompra: '',
+        detalles: '',
+        precioVenta: '',
+        imagen: '',
+        subCategoria: '',
+        productoAnterior: '',
+        detallesAnterior: '',
+        productoSiguiente: '',
+        detallesSiguiente: '',
+        porcentaje: '',
+      },
+      { emitEvent: false }
+    );
   }
 
   async addProductos() {
-    console.log(this.validacionProductos.value);
+    // console.log(this.validacionProductos);
+    // console.log(this.validacionProductos.value);
+
+    // return;
 
     let message = this.productoExistente
       ? 'Actualizando producto ....'
@@ -243,11 +263,100 @@ export class ProductosComponent implements OnInit {
 
     this.messageServvice.loading(true, message);
 
+    if (!this.productoExistente) {
+      setTimeout(async () => {
+        try {
+          try {
+            if (this.files) {
+              const resources = await this.uploadFile.uploadFile(this.files);
+              // this. = resources.url;
+              this.validacionProductos.value.imagen = resources.url;
+              console.log(resources);
+            }
 
+            // cuando es editar y no se carga una imagen
+            if (!this.files && this.productoExistente) {
+              this.validacionProductos.value.imagen = this.productEdit.imagen;
+            }
+          } catch (error) {
+            console.log('Error al carga imagen del usuario', error);
 
+            this.validacionProductos.value.imagen = '';
+          }
+
+          let categoriaPro = {};
+          let productoSugeridos = [];
+
+          if (this.isAdmin) {
+            // obtener la categoria
+            let itemCategoria = this.categorias.find(
+              (item) => item.id == this.validacionProductos.value.categoria
+            );
+
+            categoriaPro = {
+              categoria: itemCategoria.categoria,
+              subCategoria: this.validacionProductos.value.subCategoria,
+              uid: itemCategoria.uid,
+            };
+
+            if (this.validacionProductos.value.productoAnterior) {
+              productoSugeridos.push(
+                this.validacionProductos.value.productoAnterior
+              );
+            }
+
+            if (this.validacionProductos.value.productoSiguiente) {
+              productoSugeridos.push(
+                this.validacionProductos.value.productoSiguiente
+              );
+            }
+          }
+
+          const uidGenerado = generaCadenaAleatoria(20);
+          const user = JSON.parse(localStorage.getItem('user') || '{}');
+          const validacionProductos: any = {
+            categoria: categoriaPro,
+            codigo: this.validacionProductos.value.codigo,
+            descripcion: this.validacionProductos.value.descripcion,
+            detalles: this.validacionProductos.value.detalles,
+            fecha: new Date(),
+            imagen: this.validacionProductos.value.imagen,
+            intermediario: user.codigo,
+            precioCompra: this.validacionProductos.value.precioCompra,
+            precioVenta: this.validacionProductos.value.precioVenta,
+            productosSugeridos: productoSugeridos,
+            stock: this.validacionProductos.value.stock,
+            uid: uidGenerado,
+            ventas: 0,
+          };
+
+          console.log(validacionProductos);
+
+          if (this.productoExistente) {
+            validacionProductos.uid = this.productEdit.uid;
+            validacionProductos.fecha = this.productEdit.fecha;
+            validacionProductos.ventas = this.productEdit.ventas;
+          }
+
+          await this.ProductosService.addProduct(validacionProductos);
+
+          this.toastr.success(
+            'Producto Registrado',
+            'El producto fue registrado con exito!',
+            { positionClass: 'toast-bottom-right' }
+          );
+        } catch (error) {
+          console.log(error);
+        } finally {
+          this.messageServvice.loading(false);
+        }
+      }, 1100);
+    } else this.updateProducto();
+  }
+
+  updateProducto() {
     setTimeout(async () => {
       try {
-
         try {
           if (this.files) {
             const resources = await this.uploadFile.uploadFile(this.files);
@@ -256,76 +365,126 @@ export class ProductosComponent implements OnInit {
             console.log(resources);
           }
 
-          // cuando es editar y no se carga una imagen
-          if (!this.files  && this.productoExistente) {
-            this.validacionProductos.value.imagen = this.productEdit.imagen;
-          }  
-
+          // // cuando es editar y no se carga una imagen
+          // if (!this.files && this.productoExistente) {
+          //   this.validacionProductos.value.imagen = this.productEdit.imagen;
+          // }
         } catch (error) {
           console.log('Error al carga imagen del usuario', error);
 
           this.validacionProductos.value.imagen = '';
         }
 
+        let categoriaPro = {};
+        let productoSugeridos = [];
 
-
-
-
-        // obtener la categoria
-        let itemCategoria = this.categorias.find(
-          (item) => item.id == this.validacionProductos.value.categoria
-        );
-
-        const categoriaPro = {
-          categoria: itemCategoria.categoria,
-          subCategoria: this.validacionProductos.value.subCategoria,
-          uid: itemCategoria.uid,
-        };
-
-        const productoSugeridos = [];
-
-        if (this.validacionProductos.value.productoAnterior) {
-          productoSugeridos.push(
-            this.validacionProductos.value.productoAnterior
+        if (this.isAdmin) {
+          // obtener la categoria
+          let itemCategoria = this.categorias.find(
+            (item) => item.id == this.validacionProductos.value.categoria
           );
+
+          categoriaPro = {
+            categoria: itemCategoria.categoria,
+            subCategoria: this.validacionProductos.value.subCategoria,
+            uid: itemCategoria.uid,
+          };
+
+          if (this.validacionProductos.value.productoAnterior) {
+
+            // buscar el producto anterios
+
+            const productoAnterior = this.productos.find(
+              (item) => item?.uid == this.validacionProductos.value.productoAnterior
+            );
+
+
+            if (productoAnterior) {
+
+              productoSugeridos.push(
+                {
+                   uid: productoAnterior.uid,
+                   descripcion: productoAnterior.descripcion,
+                   detallesAnterior: this.validacionProductos?.get('detallesAnterior')?.value || '',
+                   imagen: productoAnterior.imagen,
+                }
+               
+             );
+
+            }
+         
+          }
+
+          if (this.validacionProductos.value.productoSiguiente) {
+
+            // buscar el producto siguiente
+
+            const productoSiguiente = this.productos.find(
+              (item) => item?.uid == this.validacionProductos.value.productoSiguiente
+            );
+
+            if (productoSiguiente) {
+
+              productoSugeridos.push(
+            
+                {
+                  uid: productoSiguiente.uid,
+                  descripcion: productoSiguiente.descripcion || '',
+                  detallesSiguiente: this.validacionProductos.get('detallesSiguiente')?.value || '',
+                  imagen: productoSiguiente.imagen || '',
+                }
+              );
+            }
+            
+          }
         }
 
-        if (this.validacionProductos.value.productoSiguiente) {
-          productoSugeridos.push(
-            this.validacionProductos.value.productoSiguiente
-          );
+        // const uidGenerado = generaCadenaAleatoria(20);
+        // const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+
+       
+        this.productEdit.descripcion = this.validacionProductos.value.descripcion;
+        this.productEdit.detalles = this.validacionProductos.value.detalles;
+        this.productEdit.imagen = this.validacionProductos.value.imagen;
+        this.productEdit.precioCompra = this.validacionProductos.value.precioCompra;
+        this.productEdit.precioVenta = this.validacionProductos.value.precioVenta;
+        this.productEdit.stock = this.validacionProductos.value.stock;
+
+        if (this.isAdmin) {
+          this.productEdit.categoria = categoriaPro;
+          this.productEdit.productosSugeridos = productoSugeridos;
         }
 
-        const uidGenerado = generaCadenaAleatoria(20);
-        const user = JSON.parse(localStorage.getItem('user') || '{}');
-        const validacionProductos: any = {
-          categoria: categoriaPro,
-          codigo: this.validacionProductos.value.codigo,
-          descripcion: this.validacionProductos.value.descripcion,
-          fecha: new Date(),
-          imagen: this.validacionProductos.value.imagen,
-          intermediario: user.codigo,
-          precioCompra: this.validacionProductos.value.precioCompra,
-          precioVenta: this.validacionProductos.value.precioVenta,
-          productosSugeridos: productoSugeridos,
-          stock: this.validacionProductos.value.stock,
-          uid: uidGenerado,
-          ventas: 0,
-        };
+        // const validacionProductos: any = {
+        //   categoria: categoriaPro,
+        //   codigo: this.validacionProductos.value.codigo,
+        //   descripcion: this.validacionProductos.value.descripcion,
+        //   detalles: this.validacionProductos.value.detalles,
+        //   // fecha: new Date(),
+        //   imagen: this.validacionProductos.value.imagen,
+        //   // intermediario: user.codigo,
+        //   precioCompra: this.validacionProductos.value.precioCompra,
+        //   precioVenta: this.validacionProductos.value.precioVenta,
+        //   productosSugeridos: productoSugeridos,
+        //   stock: this.validacionProductos.value.stock,
+        //   // uid: uidGenerado,
+        //   // ventas: 0,
+        // };
 
-        console.log(validacionProductos);
+        console.log(this.productEdit);
 
-        if (this.productoExistente) {
-          validacionProductos.uid = this.productEdit.uid;
-          validacionProductos.fecha = this.productEdit.fecha;
-          validacionProductos.ventas = this.productEdit.ventas;
-        }
+        // if (this.productoExistente) {
+        //   validacionProductos.uid = this.productEdit.uid;
+        //   validacionProductos.fecha = this.productEdit.fecha;
+        //   validacionProductos.ventas = this.productEdit.ventas;
+        // }
 
-        await this.ProductosService.addProduct(validacionProductos);
+        await this.ProductosService.updateProduct(this.productEdit);
 
         this.toastr.success(
-          'Producto Registrado',
-          'El producto fue registrado con exito!',
+          'Producto Actualizado',
+          'El producto fue actualizado con exito!',
           { positionClass: 'toast-bottom-right' }
         );
       } catch (error) {
@@ -371,8 +530,8 @@ export class ProductosComponent implements OnInit {
         this.ProductosService.delete(id);
 
         Swal.fire(
-          'Categoria eliminada',
-          'La categoria ha sido eliminado con exito',
+          'Producto eliminado',
+          'El productos ha sido eliminado con exito',
           'success'
         );
       }
@@ -381,6 +540,8 @@ export class ProductosComponent implements OnInit {
 
   editarProducto(id: string) {
     console.log(id);
+
+    this.validacionProductos.get('codigo')?.disable();
     this.ProductosService.editarProductos(id).subscribe(
       (data) => {
         this.productEdit = data.payload.data();
@@ -396,34 +557,35 @@ export class ProductosComponent implements OnInit {
   }
 
   getCategorias() {
-
     const userCurrent = JSON.parse(localStorage.getItem('user') || '{}');
 
-    this.categoriaService.getCategoria(userCurrent?.codigo).subscribe((data) => {
-      this.categorias = [];
+    this.categoriaService
+      .getCategoria(userCurrent?.codigo)
+      .subscribe((data) => {
+        this.categorias = [];
 
-      this.categorias.push({
-        uid: '',
-        categoria: 'Seleccione una categoria',
-        subcategorias: [
-          {
-            uid: '',
-            nombre: 'Seleccione una subcategoria',
-          },
-        ],
-      });
-
-      data.forEach((element: any) => {
-        // console.log(element.payload.doc.id)
         this.categorias.push({
-          id: element.payload.doc.id,
-          ...element.payload.doc.data(),
+          uid: '',
+          categoria: 'Seleccione una categoria',
+          subcategorias: [
+            {
+              uid: '',
+              nombre: 'Seleccione una subcategoria',
+            },
+          ],
         });
-      });
 
-      console.log(this.categorias);
-      // console.log(this.productos)
-    });
+        data.forEach((element: any) => {
+          // console.log(element.payload.doc.id)
+          this.categorias.push({
+            id: element.payload.doc.id,
+            ...element.payload.doc.data(),
+          });
+        });
+
+        console.log(this.categorias);
+        // console.log(this.productos)
+      });
   }
 
   // función para seleccionar un archivo
@@ -457,14 +619,17 @@ export class ProductosComponent implements OnInit {
       {
         codigo: this.productEdit.codigo,
         descripcion: this.productEdit.descripcion,
+        detalles: this.productEdit?.detalles,
         categoria: this.productEdit.categoria.uid,
         stock: this.productEdit.stock,
         precioCompra: this.productEdit.precioCompra,
         precioVenta: this.productEdit.precioVenta,
         imagen: this.productEdit.imagen,
         subCategoria: this.productEdit.categoria.subCategoria,
-        productoAnterior: this.productEdit.productosSugeridos[0] || '',
-        productoSiguiente: this.productEdit.productosSugeridos[1] || '',
+        productoAnterior: this.productEdit.productosSugeridos[0]?.uid || '',
+        detallesAnterior: this.productEdit.productosSugeridos[0]?.detallesAnterior || '',
+        productoSiguiente: this.productEdit.productosSugeridos[1]?.uid || '',
+        detallesSiguiente: this.productEdit.productosSugeridos[1]?.detallesSiguiente || '',
       },
       { emitEvent: false }
     );

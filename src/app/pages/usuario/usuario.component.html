@@ -40,12 +40,13 @@
 
             <th style="width:10px">#</th>
             <th>Foto</th>
+            <th>Codigo</th>
             <th>Nombre</th>
             <th>Correo Electronico</th>
 
             <th>Perfil</th>
             <th>Estado</th>
-            <th>Último login</th>
+            <th>F. creación</th>
             <th>Acciones</th>
 
           </tr>
@@ -58,12 +59,13 @@
             <td>{{i+1}}</td>
             <!-- ./../../../assets/img/usuarios/default/anonymous.png -->
             <td><img   [src]="user.foto?user.foto:'./../../../assets/img/usuarios/default/anonymous.png'" class="img-thumbnail" width="40px"></td>
+            <td>{{user.codigo}} </td>
             <td>{{user.nombre}} </td>
             <td>{{user.usuario}}</td>
 
             <td>{{user.perfil}}</td>
             <td><button class="btn btn-success btn-xs">Activado</button></td>
-            <td>{{user?.ultimoLogin| formatDate}}</td>
+            <td>{{user?.fecha| formatDate}}</td>
             <td>
 
               <div class="btn-group">

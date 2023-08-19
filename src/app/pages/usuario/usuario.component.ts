@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UploadFileService } from 'src/app/services/upload-file.service';
 import { MensajesServiceService } from 'src/app/services/mensajes-service.service';
 import { TokenService } from 'src/app/services/token.service';
+import { generaCadenaAleatoriaNumber } from 'src/app/util/dataUtil';
 
 @Component({
   selector: 'app-usuario',
@@ -24,7 +25,7 @@ export class UsuarioComponent implements OnInit {
   usuarios: any[] = [];
   userExistente: boolean = false;
   userEdit: any;
-
+  
   files: any;
 
   constructor(
@@ -155,7 +156,7 @@ export class UsuarioComponent implements OnInit {
           await this.updateDataUser();
         } else {
           const dataUser = this.validacionUsuario.value;
-          dataUser.codigo = this.generaCadenaAleatoria(10);
+          dataUser.codigo = generaCadenaAleatoriaNumber(5);
           dataUser.fecha = new Date();
 
           const result = await this.loginService.register({

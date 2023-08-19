@@ -29,6 +29,11 @@ export class ProductosService implements OnInit {
       .set(productos, { merge: true });
   }
 
+  updateProduct(productos: any): Promise<any> {
+    return this.afs.collection('productos').doc(productos.uid).update(productos);
+      
+  }
+
   getProducto(codigoIntermedio: any): Observable<any> {
     console.log('codigoIntermedio', codigoIntermedio);
     if (this.isAdmin) {

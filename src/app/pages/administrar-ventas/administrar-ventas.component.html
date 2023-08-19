@@ -65,7 +65,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="alert alert-info">
+      <div class="alert alert-info" *ngIf="venta && venta.length<1">
         
         <strong>Info!</strong> No hay ventas registradas.
       </div>
