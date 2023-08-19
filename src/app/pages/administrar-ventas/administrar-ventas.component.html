@@ -53,9 +53,9 @@
             <td>{{ vent?.total }}</td>
             <td>
               <div class="btn-group">
-                <!-- <button class="btn btn-info">
+                <button class="btn btn-info"  (click)="exportToExcel(vent.id)">
                   <i class="fa fa-print"></i>
-                </button> -->
+                </button>
 
                 <button class="btn btn-danger" (click)="deleteVenta(vent.id)">
                   <i class="fa fa-times"></i>

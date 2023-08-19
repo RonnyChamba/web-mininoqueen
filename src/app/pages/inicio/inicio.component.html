@@ -1,565 +1,346 @@
-
-
-
-	<!--=====================================
+<!--=====================================
 	inicio
 	======================================-->
 
 
 
-	
 
-    <section class="content-header">
-		  
-        <h1>
-          
-          Tablero
-          
-          <small>Panel de Control</small>
-        
-        </h1>
-    
-        <ol class="breadcrumb">
-          
-          <li><a [routerLink]="['/dashboard/inicio' ]"><i class="fa fa-dashboard"></i> Inicio</a></li>
-          
-          <li class="active">Tablero</li>
-        
-        </ol>
-    
-      </section>
-    
-      <section class="content">
-    
-        <div class="row">
-          
-        
-    
-    
-    <div class="col-lg-3 col-xs-6">
-    
-      <div class="small-box bg-aqua">
-        
-        <div class="inner">
-          
-          <h3>$227,212.00</h3>
-    
-          <p>Ventas</p>
-        
+
+  <section class="content-header">
+
+    <h1>
+  
+      Tablero
+  
+      <small>Panel de Control</small>
+  
+    </h1>
+  
+    <ol class="breadcrumb">
+  
+      <li><a [routerLink]="['/dashboard/inicio' ]"><i class="fa fa-dashboard"></i> Inicio</a></li>
+  
+      <li class="active">Tablero</li>
+  
+    </ol>
+  
+  </section>
+  
+  <section class="content">
+  
+    <div class="row">
+  
+  
+  
+  
+      <div class="col-lg-3 col-xs-6">
+  
+        <div class="small-box bg-aqua">
+  
+          <div class="inner">
+  
+            <h3>{{cantidadVentas | currency}}</h3>
+  
+            <p>Ventas</p>
+  
+          </div>
+  
+          <div class="icon">
+  
+            <i class="ion ion-social-usd"></i>
+  
+          </div>
+  
+          <a [routerLink]="['/dashboard/admin_ventas' ]" class="small-box-footer">
+  
+            Más info <i class="fa fa-arrow-circle-right"></i>
+  
+          </a>
+  
         </div>
-        
-        <div class="icon">
-          
-          <i class="ion ion-social-usd"></i>
-        
-        </div>
-        
-        <a [routerLink]="['/dashboard/admin_ventas' ]" class="small-box-footer">
-          
-          Más info <i class="fa fa-arrow-circle-right"></i>
-        
-        </a>
-    
+  
       </div>
-    
-    </div>
-    
-    <div class="col-lg-3 col-xs-6">
-    
-      <div class="small-box bg-green">
-        
-        <div class="inner">
-        
-          <h3>6</h3>
-    
-          <p>Categorías</p>
-        
+  
+      <div class="col-lg-3 col-xs-6">
+  
+        <div class="small-box bg-green">
+  
+          <div class="inner">
+  
+            <h3>{{cantidadCateogirias}}</h3>
+  
+            <p>Categorías</p>
+  
+          </div>
+  
+          <div class="icon">
+  
+            <i class="ion ion-clipboard"></i>
+  
+          </div>
+  
+          <a [routerLink]="['/dashboard/categoria' ]" class="small-box-footer">
+  
+            Más info <i class="fa fa-arrow-circle-right"></i>
+  
+          </a>
+  
         </div>
-        
-        <div class="icon">
-        
-          <i class="ion ion-clipboard"></i>
-        
-        </div>
-        
-        <a [routerLink]="['/dashboard/categoria' ]" class="small-box-footer">
-          
-          Más info <i class="fa fa-arrow-circle-right"></i>
-        
-        </a>
-    
+  
       </div>
-    
-    </div>
-    
-    <div class="col-lg-3 col-xs-6">
-    
-      <div class="small-box bg-yellow">
-        
-        <div class="inner">
-        
-          <h3>10</h3>
-    
-          <p>Clientes</p>
-      
+  
+      <div class="col-lg-3 col-xs-6">
+  
+        <div class="small-box bg-yellow">
+  
+          <div class="inner">
+  
+            <h3>{{cantidadClientes}} </h3>
+  
+            <p>Clientes</p>
+  
+          </div>
+  
+          <div class="icon">
+  
+            <i class="ion ion-person-add"></i>
+  
+          </div>
+  
+          <a [routerLink]="['/dashboard/clientes' ]" class="small-box-footer">
+  
+            Más info <i class="fa fa-arrow-circle-right"></i>
+  
+          </a>
+  
         </div>
-        
-        <div class="icon">
-        
-          <i class="ion ion-person-add"></i>
-        
-        </div>
-        
-        <a [routerLink]="['/dashboard/clientes' ]" class="small-box-footer">
-    
-          Más info <i class="fa fa-arrow-circle-right"></i>
-    
-        </a>
-    
+  
       </div>
-    
-    </div>
-    
-    <div class="col-lg-3 col-xs-6">
-    
-      <div class="small-box bg-red">
-      
-        <div class="inner">
-        
-          <h3>60</h3>
-    
-          <p>Productos</p>
-        
+  
+      <div class="col-lg-3 col-xs-6">
+  
+        <div class="small-box bg-red">
+  
+          <div class="inner">
+  
+            <h3>{{cantidadProductos}}</h3>
+  
+            <p>Productos</p>
+  
+          </div>
+  
+          <div class="icon">
+  
+            <i class="ion ion-ios-cart"></i>
+  
+          </div>
+  
+          <a [routerLink]="['/dashboard/productos' ]" class="small-box-footer">
+  
+            Más info <i class="fa fa-arrow-circle-right"></i>
+  
+          </a>
+  
         </div>
-        
-        <div class="icon">
-          
-          <i class="ion ion-ios-cart"></i>
-        
-        </div>
-        
-        <a [routerLink]="['/dashboard/productos' ]" class="small-box-footer">
-          
-          Más info <i class="fa fa-arrow-circle-right"></i>
-        
-        </a>
-    
+  
       </div>
-    
     </div>
-        </div> 
-    
-         <div class="row">
-           
-            <div class="col-lg-12">
-    
-              
-    <!--=====================================
-    GRÁFICO DE VENTAS
-    ======================================-->
-    
-    
-    <div class="box box-solid bg-teal-gradient">
-        
-        <div class="box-header">
-            
-             <i class="fa fa-th"></i>
-    
-              <h3 class="box-title">Gráfico de Ventas</h3>
-    
-        </div>
-    
-        <div class="box-body border-radius-none nuevoGraficoVentas">
-    
-            <div class="chart" id="line-chart-ventas" style="height: 250px;"></div>
-    
-      </div>
-    
-    </div>
-    
-   
+  
+    <div class="row">
+  
+      <div class="col-lg-12">
+  
+  
+        <!--=====================================
+      GRÁFICO DE VENTAS
+      ======================================-->
+  
+  
+        <div class="box box-solid bg-teal-gradient">
+  
+          <div class="box-header">
+  
+            <i class="fa fa-th"></i>
+  
+            <h3 class="box-title">Gráfico de Ventas</h3>
+  
+          </div>
+  
+          <div class="box-body border-radius-none nuevoGraficoVentas">
+  
+            <div id="chart" style="height: 250px;">
+  
+              <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+                [dataLabels]="chartOptions.dataLabels" [grid]="chartOptions.grid"
+                [stroke]="chartOptions.stroke"></apx-chart>
+  
             </div>
-    
-            <div class="col-lg-6">
-    
-              
-    <!--=====================================
-    PRODUCTOS MÁS VENDIDOS
-    ======================================-->
-    
-    <div class="box box-default">
-        
-        <div class="box-header with-border">
-      
-          <h3 class="box-title">Productos más vendidos</h3>
-    
+  
+          </div>
+  
         </div>
-    
-        <div class="box-body">
-        
-              <div class="row">
-    
-                <div class="col-md-7">
-    
-                     <div class="chart-responsive">
-                    
-                        <canvas id="pieChart" height="150"></canvas>
-                  
-                      </div>
-    
+  
+  
+      </div>
+  
+      <div class="col-lg-6">
+  
+  
+        <!--=====================================
+      PRODUCTOS MÁS VENDIDOS
+      ======================================-->
+  
+        <div class="box box-default">
+  
+          <div class="box-header with-border">
+  
+            <h3 class="box-title">Productos más vendidos</h3>
+  
+          </div>
+  
+          <div class="box-body">
+  
+            <div class="row">
+  
+              <!-- <div class="col-md-7">
+  
+                <div class="chart-responsive">
+  
+                  <canvas id="pieChart" height="150">
+  
+  
+                  </canvas>
+  
                 </div>
-    
-                <div class="col-md-5">
-                      
-                       <ul class="chart-legend clearfix">
-    
-                        <li><i class="fa fa-circle-o text-red"></i> Cizalla de Palanca</li> <li><i class="fa fa-circle-o text-green"></i> Cizalla de Tijera</li> <li><i class="fa fa-circle-o text-yellow"></i> Compresor de Aire para pintura</li> <li><i class="fa fa-circle-o text-aqua"></i> Bomba Hidrostatica</li> <li><i class="fa fa-circle-o text-purple"></i> Extractor de Aire </li> <li><i class="fa fa-circle-o text-blue"></i> Bascula </li> <li><i class="fa fa-circle-o text-cyan"></i> Cortadora de Piso sin Disco </li> <li><i class="fa fa-circle-o text-magenta"></i> Guadañadora </li> <li><i class="fa fa-circle-o text-orange"></i> Cortadora de Baldosin</li> <li><i class="fa fa-circle-o text-gold"></i> Disco Punta Diamante </li>
-    
-                       </ul>
-    
-                </div>
-    
+  
+              </div> -->
+  
+              <!-- <div class="col-md-5">
+  
+                <ul class="chart-legend clearfix" *ngFor="let producto of  productosMasVendidos">
+  
+                  <li><i class="fa fa-circle-o text-red"></i> {{producto.descripcion}}</li>
+  
+  
+                </ul>
+  
+              </div> -->
+  
             </div>
-    
-        </div>
-    
-        <div class="box-footer no-padding">
-            
-            <ul class="nav nav-pills nav-stacked">
-                
-                 <li>
-                             
-                             <a>
-    
-                             <img src="./../../../assets/img/productos/513/445.jpg" class="img-thumbnail" width="60px" style="margin-right:10px"> 
-                             Cizalla de Palanca
-    
-                             <span class="pull-right text-red">   
-                             14%
-                             </span>
-                                
-                             </a>
-    
-                          </li><li>
-                             
-                             <a>
-    
-                             <img src="./../../../assets/img/productos/514/249.jpg" class="img-thumbnail" width="60px" style="margin-right:10px"> 
-                             Cizalla de Tijera
-    
-                             <span class="pull-right text-green">   
-                             11%
-                             </span>
-                                
-                             </a>
-    
-                          </li><li>
-                             
-                             <a>
-    
-                             <img src="./../../../assets/img/productos/103/763.jpg" class="img-thumbnail" width="60px" style="margin-right:10px"> 
-                             Compresor de Aire para pintura
-    
-                             <span class="pull-right text-yellow">   
-                             10%
-                             </span>
-                                
-                             </a>
-    
-                          </li><li>
-                             
-                             <a>
-    
-                             <img src="./../../../assets/img/productos/510/870.jpg" class="img-thumbnail" width="60px" style="margin-right:10px"> 
-                             Bomba Hidrostatica
-    
-                             <span class="pull-right text-aqua">   
-                             10%
-                             </span>
-                                
-                             </a>
-    
-                          </li><li>
-                             
-                             <a>
-    
-                             <img src="./../../../assets/img/productos/107/848.jpg" class="img-thumbnail" width="60px" style="margin-right:10px"> 
-                             Extractor de Aire 
-    
-                             <span class="pull-right text-purple">   
-                             7%
-                             </span>
-                                
-                             </a>
-    
-                          </li>
-    
+  
+          </div>
+  
+          <div class="box-footer no-padding">
+  
+            <ul class="nav nav-pills nav-stacked" *ngFor="let productoVendidos of  productosMasVendidos">
+  
+              <li>
+  
+  
+  
+                <a>
+  
+  
+                  <img [src]="productoVendidos.imagen" class="img-thumbnail" width="60px" style="margin-right:10px">
+                  {{productoVendidos.descripcion}}
+  
+                  <span class="pull-right text-red">
+                    stock:{{productoVendidos.stock}}
+                  </span>
+  
+                </a>
+  
+              </li>
+  
+  
+  
             </ul>
-    
+  
+          </div>
+  
         </div>
-    
-    </div>
-    
-   
+  
+  
+      </div>
+  
+      <div class="col-lg-6">
+  
+  
+  
+        <div class="box box-primary">
+  
+          <div class="box-header with-border">
+  
+            <h3 class="box-title">Productos Agregados Recientemente</h3>
+  
+            <div class="box-tools pull-right">
+  
+              <button type="button" class="btn btn-box-tool" data-widget="collapse">
+  
+                <i class="fa fa-minus"></i>
+  
+              </button>
+  
+              <button type="button" class="btn btn-box-tool" data-widget="remove">
+  
+                <i class="fa fa-times"></i>
+  
+              </button>
+  
             </div>
-    
-             <div class="col-lg-6">
-    
-              
-    
-    <div class="box box-primary">
-    
-      <div class="box-header with-border">
-    
-        <h3 class="box-title">Productos Agregados Recientemente</h3>
-    
-        <div class="box-tools pull-right">
-    
-          <button type="button" class="btn btn-box-tool" data-widget="collapse">
-    
-            <i class="fa fa-minus"></i>
-    
-          </button>
-    
-          <button type="button" class="btn btn-box-tool" data-widget="remove">
-    
-            <i class="fa fa-times"></i>
-    
-          </button>
-    
+  
+          </div>
+  
+          <div class="box-body">
+  
+            <ul class="products-list product-list-in-box">
+  
+              <li class="item" *ngFor="let producto of aggRecienteProductos">
+  
+                <div class="product-img">
+  
+                  <img [src]="
+                  producto.imagen
+                    ? producto.imagen
+                    : './../../../assets/img/productos/default/anonymous.png'
+                " alt="">
+  
+                </div>
+  
+                <div class="product-info">
+  
+                  <a href="" class="product-title">
+  
+                    {{producto.descripcion}}
+  
+                    <span class="label label-warning pull-right"> {{producto.precioVenta | currency}}</span>
+  
+                  </a>
+  
+                </div>
+  
+              </li>
+  
+  
+            </ul>
+  
+          </div>
+  
+          <div class="box-footer text-center">
+  
+            <a [routerLink]="['/dashboard/productos' ]" class="uppercase">Ver todos los productos</a>
+  
+          </div>
+  
         </div>
-    
+  
       </div>
-      
-      <div class="box-body">
-    
-        <ul class="products-list product-list-in-box">
-    
-        <li class="item">
-    
-            <div class="product-img">
-    
-              <img src="./../../../assets/img/productos/517/746.jpg" alt="Product Image">
-    
-            </div>
-    
-            <div class="product-info">
-    
-              <a href="" class="product-title">
-    
-                Cortadora de Baldosin
-    
-                <span class="label label-warning pull-right">$1302</span>
-    
-              </a>
-        
-           </div>
-    
-          </li><li class="item">
-    
-            <div class="product-img">
-    
-              <img src="./../../../assets/img/productos/516/228.jpg" alt="Product Image">
-    
-            </div>
-    
-            <div class="product-info">
-    
-              <a href="" class="product-title">
-    
-                Cono slump
-    
-                <span class="label label-warning pull-right">$196</span>
-    
-              </a>
-        
-           </div>
-    
-          </li><li class="item">
-    
-            <div class="product-img">
-    
-              <img src="./../../../assets/img/productos/515/174.jpg" alt="Product Image">
-    
-            </div>
-    
-            <div class="product-info">
-    
-              <a href="" class="product-title">
-    
-                Coche llanta neumatica
-    
-                <span class="label label-warning pull-right">$588</span>
-    
-              </a>
-        
-           </div>
-    
-          </li><li class="item">
-    
-            <div class="product-img">
-    
-              <img src="./../../../assets/img/productos/514/249.jpg" alt="Product Image">
-    
-            </div>
-    
-            <div class="product-info">
-    
-              <a href="" class="product-title">
-    
-                Cizalla de Tijera
-    
-                <span class="label label-warning pull-right">$812</span>
-    
-              </a>
-        
-           </div>
-    
-          </li><li class="item">
-    
-            <div class="product-img">
-    
-              <img src="./../../../assets/img/productos/513/445.jpg" alt="Product Image">
-    
-            </div>
-    
-            <div class="product-info">
-    
-              <a href="" class="product-title">
-    
-                Cizalla de Palanca
-    
-                <span class="label label-warning pull-right">$630</span>
-    
-              </a>
-        
-           </div>
-    
-          </li><li class="item">
-    
-            <div class="product-img">
-    
-              <img src="./../../../assets/img/productos/512/266.jpg" alt="Product Image">
-    
-            </div>
-    
-            <div class="product-info">
-    
-              <a href="" class="product-title">
-    
-                Cilindro muestra de concreto
-    
-                <span class="label label-warning pull-right">$560</span>
-    
-              </a>
-        
-           </div>
-    
-          </li><li class="item">
-    
-            <div class="product-img">
-    
-              <img src="./../../../assets/img/productos/511/239.jpg" alt="Product Image">
-    
-            </div>
-    
-            <div class="product-info">
-    
-              <a href="" class="product-title">
-    
-                Chapeta
-    
-                <span class="label label-warning pull-right">$924</span>
-    
-              </a>
-        
-           </div>
-    
-          </li><li class="item">
-    
-            <div class="product-img">
-    
-              <img src="./../../../assets/img/productos/510/870.jpg" alt="Product Image">
-    
-            </div>
-    
-            <div class="product-info">
-    
-              <a href="" class="product-title">
-    
-                Bomba Hidrostatica
-    
-                <span class="label label-warning pull-right">$1078</span>
-    
-              </a>
-        
-           </div>
-    
-          </li><li class="item">
-    
-            <div class="product-img">
-    
-              <img src="./../../../assets/img/productos/509/878.jpg" alt="Product Image">
-    
-            </div>
-    
-            <div class="product-info">
-    
-              <a href="" class="product-title">
-    
-                Bascula 
-    
-                <span class="label label-warning pull-right">$182</span>
-    
-              </a>
-        
-           </div>
-    
-          </li><li class="item">
-    
-            <div class="product-img">
-    
-              <img src="./../../../assets/img/productos/508/500.jpg" alt="Product Image">
-    
-            </div>
-    
-            <div class="product-info">
-    
-              <a href="" class="product-title">
-    
-                Tensor
-    
-                <span class="label label-warning pull-right">$140</span>
-    
-              </a>
-        
-           </div>
-    
-          </li>
-        </ul>
-    
+  
+      <div class="col-lg-12">
+  
+  
       </div>
-    
-      <div class="box-footer text-center">
-    
-        <a [routerLink]="['/dashboard/productos' ]" class="uppercase">Ver todos los productos</a>
-      
-      </div>
-    
+  
     </div>
-    
-            </div>
-    
-             <div class="col-lg-12">
-               
-              
-             </div>
-    
-         </div>
-    
-      </section>
-     
-    
-    
-
-
+  
+  </section>

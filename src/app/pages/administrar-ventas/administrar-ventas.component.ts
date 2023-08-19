@@ -2,6 +2,8 @@ import Swal from 'sweetalert2';
 import { VentasService } from './../../services/ventas.service';
 import { Component, OnInit } from '@angular/core';
 import { TokenService } from 'src/app/services/token.service';
+import * as ExcelJS from 'exceljs';
+// import * as fs from 'file-saver';
 
 @Component({
   selector: 'app-administrar-ventas',
@@ -65,4 +67,39 @@ export class AdministrarVentasComponent implements OnInit {
       }
     });
   }
+
+  exportToExcel(id: any) {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet('Sheet', {
+      headerFooter: { firstHeader: 'Hello Exceljs', firstFooter: 'Hello World' }
+    });
+
+    // Agregar un encabezado personalizado
+    sheet.addRow(['Codigo', 'Fecha', 'Cliente', 'Vendedor', 'Productos','Total', 'Estado']);
+
+
+    // consulta el registro en firebase por su id
+    const data = [
+      ['John', 30, 'USA'],
+      ['Alice', 25, 'Canada'],
+      ['Bob', 28, 'UK'],
+      ['Bob', 28, 'UK'],
+      ['Bob', 28, 'UK'],
+      ['Bob', 28, 'UK'],
+      ['Bob', 28, 'UK']
+
+
+    ];
+
+    data.forEach((row) => {
+      sheet.addRow(row);
+    });
+
+    // workbook.xlsx.writeBuffer().then((buffer) => {
+    //   const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    //   fs.saveAs(blob, 'example.xlsx');
+    // });
+  }
+
+  
 }

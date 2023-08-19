@@ -17,6 +17,7 @@ import { UsuarioComponent } from './usuario/usuario.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CountUploadPlanification, FormatDatePipe, TrimText } from '../../app/util/format-date.pipe';
 import { PagesRoutingModule } from './pages-routing.module';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 
@@ -41,7 +42,8 @@ import { PagesRoutingModule } from './pages-routing.module';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    PagesRoutingModule
+    PagesRoutingModule,
+    NgApexchartsModule,
   ],
   exports:[
     DashboardComponent,
