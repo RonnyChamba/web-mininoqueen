@@ -18,9 +18,16 @@
       <a [routerLink]="['/dashboard/pedidos']">
         <button class="btn btn-primary">Ver Pedidos</button>
       </a>
+      <a style="margin-left: 5px;">      
+          <button  class="btn btn-primary"  (click)="generatePDF()">
+           Reporte General
+          </button>
+        
+      </a>
     </div>
+  
 
-    <div class="box-body">
+    <div class="box-body" #fromHTML>
       <table class="table table-bordered table-striped dt-responsive tablas">
         <thead>
           <tr>
@@ -50,10 +57,10 @@
             <td>{{ vent?.metodoPago }}</td>
             <td>{{ vent?.producto?.length }}</td>
             <td>{{ vent.neto }}</td>
-            <td>{{ vent?.total }}</td>
+            <td>{{ vent?.total | currency }}</td>
             <td>
               <div class="btn-group">
-                <button class="btn btn-info"  (click)="exportToExcel(vent.id)">
+                <button class="btn btn-info"  (click)="generatePDF(vent.id)">
                   <i class="fa fa-print"></i>
                 </button>
 
