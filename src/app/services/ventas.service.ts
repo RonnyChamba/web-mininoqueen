@@ -210,6 +210,9 @@ export class VentasService {
     }
   }
   catch(error) {
+// dsfdsf
+
+
     console.error('Error generating PDF:', error);
   }
 }
